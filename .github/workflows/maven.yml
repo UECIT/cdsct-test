@@ -15,7 +15,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      DRIVER_LOCATION: src/main/resources/drivers/chromedriver_linux
+      DRIVER_LOCATION: $CHROMEWEBDRIVER
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
