@@ -15,8 +15,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      DRIVER_LOCATION: ${{env.CHROMEWEBDRIVER}}
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      DRIVER_LOCATION: ${{ env.CHROMEWEBDRIVER }}
 
     steps:
     - uses: actions/checkout@v2
