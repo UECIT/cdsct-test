@@ -21,7 +21,7 @@ public class Context {
   @Bean
   public WebDriver driver() {
     System.out.println(driverLocation);
-    System.setProperty("webdriver.chrome.driver", driverLocation);
+//    System.setProperty("webdriver.chrome.driver", driverLocation);
     return new ChromeDriver();
   }
 
