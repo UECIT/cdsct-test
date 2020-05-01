@@ -2,6 +2,7 @@ package uk.nhs.ctp.context;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,9 @@ public class Context {
   public WebDriver driver() {
     System.out.println(driverLocation);
 //    System.setProperty("webdriver.chrome.driver", driverLocation);
-    return new ChromeDriver();
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+    return new ChromeDriver(options);
   }
 
   @Bean
