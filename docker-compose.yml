@@ -9,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: cdss_decoupling
   ems:
-    image: docker.pkg.github.com/uecit/cdss-ems/latest:${EMS_BACKEND}
+    image: docker.pkg.github.com/uecit/cactus-ems/cactus-ems:${EMS_BACKEND}
     ports:
       - "8083:8083"
     environment:
@@ -19,6 +19,6 @@ services:
     depends_on: 
       - ems-mysql
   ems-ui:
-    image: docker.pkg.github.com/uecit/cdss-ems/ui:${EMS_UI}
+    image: docker.pkg.github.com/uecit/cactus-ems/cactus-ems-ui:${EMS_UI}
     ports:
         - "4200:4200"

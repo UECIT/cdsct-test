@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import uk.nhs.ctp.model.EMS;
 
@@ -21,8 +22,13 @@ public class Context {
 
   @Bean
   public WebDriver driver() {
-    System.out.println(driverLocation);
-//    System.setProperty("webdriver.chrome.driver", driverLocation);
+    System.setProperty("webdriver.chrome.driver", driverLocation);
+    return new ChromeDriver();
+  }
+
+  @Bean(name = "driver")
+  @Profile("ci")
+  public WebDriver driverCI() {
     ChromeOptions options = new ChromeOptions();
     options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
     return new ChromeDriver(options);

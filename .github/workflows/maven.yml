@@ -28,6 +28,8 @@ jobs:
     - name: Check running containers
       run: docker ps
     - name: Where is chrome driver
+      env:
+        SPRING_PROFILES_ACTIVE: ci
       run: whereis chromedriver
     - name: Run maven verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
