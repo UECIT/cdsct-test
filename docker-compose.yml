@@ -8,6 +8,25 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: cdss_decoupling
+  fhir-server-mysql:
+    image: mysql:5.6
+    restart: always
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cdss_resources
+  fhir-server:
+    image: docker.pkg.github.com/uecit/cactus-fhir-server/fhir-server:${FHIR_SERVER}
+    ports: 
+      - 8084:8084
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:mysql://fhir-server-mysql:3306/cdss_resources
+    - SPRING_DATASOURCE_USERNAME=root
+    - SPRING_DATASOURCE_PASSWORD=password
+    - fhir.server=http://fhir-server:8084/fhir
+    depends_on: 
+      - fhir-server-mysql
   ems:
     image: docker.pkg.github.com/uecit/cactus-ems/cactus-ems:${EMS_BACKEND}
     ports:
@@ -16,9 +35,22 @@ services:
     - SPRING_DATASOURCE_URL=jdbc:mysql://ems-mysql:3306/cdss_decoupling
     - SPRING_DATASOURCE_USERNAME=root
     - SPRING_DATASOURCE_PASSWORD=password
+    - FHIR_SERVER=http://fhir-server:8084/fhir
+    - BLOB_SERVER=http://fhir-server:8084/blob
+    - EMS_FHIR_SERVER=http://ems:8083/fhir
     depends_on: 
       - ems-mysql
   ems-ui:
     image: docker.pkg.github.com/uecit/cactus-ems/cactus-ems-ui:${EMS_UI}
     ports:
         - "4200:4200"
+  cdss:
+    image: docker.pkg.github.com/uecit/cactus-cdss/cactus-cdss:${CDSS}
+    ports:
+      - "8080:8080"
+    environment: 
+      - FHIR_SERVER=http://fhir-server:8084/fhir
+      - BLOB_SERVER=http://fhir-server:8084/blob
+    depends_on: 
+      - ems
+      - fhir-server
