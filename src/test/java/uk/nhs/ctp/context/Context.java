@@ -7,7 +7,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import uk.nhs.ctp.model.EMS;
 
@@ -22,21 +21,18 @@ public class Context {
   @Value("${driver.location}")
   private String driverLocation;
 
-//  @Bean
-//  @Profile("!ci")
-//  public WebDriver driver() {
-//    System.setProperty("webdriver.chrome.driver", driverLocation);
-//    log.info("Starting chrome driver at {}", driverLocation);
-//    return new ChromeDriver();
-//  }
+  @Bean
+  public WebDriver driver() {
+    if (Boolean.parseBoolean(System.getenv("CI"))) {
+      ChromeOptions options = new ChromeOptions();
+      options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+      log.info("Starting chrome driver for profile 'CI'");
+      return new ChromeDriver(options);
+    }
 
-  @Bean(name = "driver")
-  @Profile("ci")
-  public WebDriver driverCI() {
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
-    log.info("Starting chrome driver for profile 'CI'");
-    return new ChromeDriver(options);
+    System.setProperty("webdriver.chrome.driver", driverLocation);
+    log.info("Starting chrome driver at {}", driverLocation);
+    return new ChromeDriver();
   }
 
   @Bean
