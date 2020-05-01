@@ -22,13 +22,13 @@ public class Context {
   @Value("${driver.location}")
   private String driverLocation;
 
-  @Bean
-  @Profile("!ci")
-  public WebDriver driver() {
-    System.setProperty("webdriver.chrome.driver", driverLocation);
-    log.info("Starting chrome driver at {}", driverLocation);
-    return new ChromeDriver();
-  }
+//  @Bean
+//  @Profile("!ci")
+//  public WebDriver driver() {
+//    System.setProperty("webdriver.chrome.driver", driverLocation);
+//    log.info("Starting chrome driver at {}", driverLocation);
+//    return new ChromeDriver();
+//  }
 
   @Bean(name = "driver")
   @Profile("ci")
