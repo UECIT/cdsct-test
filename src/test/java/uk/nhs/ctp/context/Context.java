@@ -1,5 +1,6 @@
 package uk.nhs.ctp.context;
 
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,7 +28,9 @@ public class Context {
       ChromeOptions options = new ChromeOptions();
       options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
       log.info("Starting chrome driver for profile 'CI'");
-      return new ChromeDriver(options);
+      ChromeDriver driver = new ChromeDriver(options);
+      driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+      return driver;
     }
 
     System.setProperty("webdriver.chrome.driver", driverLocation);
