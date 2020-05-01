@@ -29,7 +29,7 @@ public class Context {
       options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
       log.info("Starting chrome driver for profile 'CI'");
       ChromeDriver driver = new ChromeDriver(options);
-      driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+      driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
       return driver;
     }
 
