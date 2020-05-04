@@ -24,7 +24,7 @@ jobs:
     - name: Docker login
       run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
     - name: Run Cactus
-      run: bash scripts\run-cactus.sh
+      run: bash scripts/run-cactus.sh
     - name: Verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: Clean up
