@@ -23,11 +23,9 @@ jobs:
         java-version: 1.11
     - name: Docker login
       run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the docker-compose stack
-      run: docker-compose up -d
-    - name: Check running containers
-      run: docker ps
-    - name: Run maven verify
+    - name: Run Cactus
+      run: bash scripts/run-cactus.sh
+    - name: Verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: Clean up
       run: docker-compose down
