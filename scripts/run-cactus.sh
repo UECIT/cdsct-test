@@ -17,10 +17,13 @@ echo "Planting a cactus..."
 
 docker-compose up -d
 
-attempt_counter=0
+attempt_counter=1
 retry_wait=5
 max_attempts=18 #90 seconds
 
+echo "waiting for cdss..."
 healthcheck "http://localhost:8080/fhir/metadata"
+echo "waiting for fhir server..."
 healthcheck "http://localhost:8084/fhir/metadata"
+echo "waiting for ems..."
 healthcheck "http://localhost:8083/fhir/metadata"
