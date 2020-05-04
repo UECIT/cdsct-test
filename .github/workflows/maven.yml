@@ -26,7 +26,7 @@ jobs:
     - name: Build the docker-compose stack
       run: docker-compose up -d
     - name: Check running containers
-      run: docker ps && sleep 10s
+      run: docker ps
     - name: Run maven verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: Clean up
