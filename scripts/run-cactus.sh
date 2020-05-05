@@ -32,4 +32,4 @@ healthcheck "http://localhost:8085/fhir/metadata"
 scriptFile="$(dirname "$0")"/supplier-setup.sql
 echo "running $scriptFile"
 script=$(<$scriptFile)
-docker-compose exec ems-mysql bash -c "mysql -ppassword cdss_decoupling -e \"$script\""
+docker-compose exec -T ems-mysql bash -c "mysql -ppassword cdss_decoupling -e \"$script\""
