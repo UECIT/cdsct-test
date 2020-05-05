@@ -38,6 +38,7 @@ services:
     - FHIR_SERVER=http://fhir-server:8084/fhir
     - BLOB_SERVER=http://fhir-server:8084/blob
     - EMS_FHIR_SERVER=http://ems:8083/fhir
+    - DOS_SERVER=http://dos:8085/fhir
     depends_on: 
       - ems-mysql
   ems-ui:
