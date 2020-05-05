@@ -19,7 +19,7 @@ docker-compose up -d
 
 attempt_counter=1
 retry_wait=5
-max_attempts=18 #90 seconds
+max_attempts=20 #100 seconds
 
 echo "waiting for cdss..."
 healthcheck "http://localhost:8080/fhir/metadata"
