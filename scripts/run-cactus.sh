@@ -19,7 +19,7 @@ docker-compose up -d
 
 attempt_counter=1
 retry_wait=5
-max_attempts=18 #90 seconds
+max_attempts=20 #100 seconds
 
 echo "waiting for cdss..."
 healthcheck "http://localhost:8080/fhir/metadata"
@@ -29,3 +29,7 @@ echo "waiting for ems..."
 healthcheck "http://localhost:8083/fhir/metadata"
 echo "waiting for dos..."
 healthcheck "http://localhost:8085/fhir/metadata"
+scriptFile="$(dirname "$0")"/supplier-setup.sql
+echo "running $scriptFile"
+script=$(<$scriptFile)
+docker-compose exec -T ems-mysql bash -c "mysql -p\${MYSQL_ROOT_PASSWORD} \${MYSQL_DATABASE} -e \"$script\""
