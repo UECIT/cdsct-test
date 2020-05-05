@@ -29,8 +29,6 @@ echo "waiting for ems..."
 healthcheck "http://localhost:8083/fhir/metadata"
 echo "waiting for dos..."
 healthcheck "http://localhost:8085/fhir/metadata"
-# docker-compose exec ems-mysql /bin/bash -c "mysql -ppassword cdss_decoupling -e \"INSERT INTO cdss_supplier (base_url, name) VALUES ('http://cdss:8080/fhir', 'Dockerized CDSS');\""
-# script="INSERT INTO cdss_supplier (base_url, name) VALUES ('http://cdss:8080/fhir', 'Dockerized CDSS');"
 scriptFile="$(dirname "$0")"/supplier-setup.sql
 echo "running $scriptFile"
 script=$(<$scriptFile)
