@@ -14,11 +14,7 @@ public class LoginSteps extends EMSTest {
 
   @Given("^an admin user$")
   public void setupAdminUser() {
-    User admin = User.builder()
-        .username("admin")
-        .password("admin@123")
-        .build();
-    ems.setUser(admin);
+    ems.setUser(User.admin());
   }
 
   @When("^the user logs in$")

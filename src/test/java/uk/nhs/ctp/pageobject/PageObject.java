@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PageObject {
+public abstract class PageObject {
 
   protected WebDriver webdriver;
   protected WebDriverWait wait;
@@ -16,5 +16,7 @@ public class PageObject {
     this.webdriver = driver;
     this.wait = new WebDriverWait(driver, TIMEOUT_SECONDS);
   }
+
+  public abstract boolean onPage();
 
 }

@@ -1,9 +1,26 @@
 package uk.nhs.ctp.pageobject;
 
+import static org.openqa.selenium.By.tagName;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.not;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
+import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import uk.nhs.ctp.model.Jurisdiction;
+import uk.nhs.ctp.model.Patient;
+import uk.nhs.ctp.model.SelectableByName;
+import uk.nhs.ctp.model.SelectionMode;
+import uk.nhs.ctp.model.ServiceDefinition;
+import uk.nhs.ctp.model.SettingContext;
+import uk.nhs.ctp.model.UserType;
 
 public class MainPage extends PageObject {
 
@@ -11,11 +28,93 @@ public class MainPage extends PageObject {
     super(driver);
   }
 
+  private static final String PATIENT_BUTTONS_PATH = "(//patient-selection//button)[position()<last()]";
+  private static final String SETTING_CONTEXT_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Setting Context\"]]//button";
+  private static final String USER_TYPE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select User Type\"]]//button";
+  private static final String JURISDICTION_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Jurisdiction\"]]//button";
+  private static final String SELECTION_MODE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Service Definition Selection Mode\"]]//button";
+  private static final String LAUNCH_PATH = "//div[@class=\"launchSection\"]//button";
+
+  @FindBy(xpath = PATIENT_BUTTONS_PATH)
+  private List<WebElement> patientButtons;
+
+  @FindBy(xpath = SETTING_CONTEXT_BUTTONS_PATH)
+  private List<WebElement> settingContextButtons;
+
+  @FindBy(xpath = USER_TYPE_BUTTONS_PATH)
+  private List<WebElement> userTypeButtons;
+
+  @FindBy(xpath = JURISDICTION_BUTTONS_PATH)
+  private List<WebElement> jurisdictionButtons;
+
+  @FindBy(xpath = SELECTION_MODE_BUTTONS_PATH)
+  private List<WebElement> selectionModeButtons;
+
+  @FindBy(xpath = LAUNCH_PATH)
+  private WebElement launchButton;
+
   @FindBy(className = "menuBar")
   private WebElement menuBar;
 
+  @FindBy(tagName = "snack-bar-container")
+  private WebElement snackBar;
+
+  @Override
   public boolean onPage() {
-    return wait.until(ExpectedConditions.urlContains("main"))
+    return wait.until(urlContains("main"))
         && menuBar.isDisplayed();
+  }
+
+  public void dismissSnackBar() {
+    if (snackBar.isDisplayed()) {
+      WebElement understandButton = snackBar.findElement(By.className("mat-button"));
+      wait.until(elementToBeClickable(understandButton)).click();
+    }
+    wait.until(not(presenceOfAllElementsLocatedBy(tagName("snack-bar-container"))));
+  }
+
+  public void selectPatient(Patient patient) {
+    selectButtonWithText(patientButtons, patient);
+  }
+
+  public void selectSettingContext(SettingContext context) {
+    selectButtonWithText(settingContextButtons, context);
+  }
+
+  public void selectUserType(UserType userType) {
+    selectButtonWithText(userTypeButtons, userType);
+  }
+
+  public void selectJurisdiction(Jurisdiction jurisdiction) {
+    selectButtonWithText(jurisdictionButtons, jurisdiction);
+  }
+
+  public void selectSelectionMode(SelectionMode selectionMode) {
+    selectButtonWithText(selectionModeButtons, selectionMode);
+  }
+
+  public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
+    //todo: implement me
+  }
+
+  public boolean triageReady() {
+    return wait.until(visibilityOf(launchButton)).isEnabled();
+  }
+
+  public void launchTriage() {
+    if (!triageReady()) {
+      throw new IllegalStateException("Launch button not enabled");
+    }
+    wait.until(elementToBeClickable(launchButton)).click();
+  }
+
+  private void selectButtonWithText(List<WebElement> elements, SelectableByName option) {
+    WebElement button = elements.stream()
+        .filter(elem -> elem.getText().contains(option.getName()))
+        .findAny()
+        .orElseThrow(() -> new NoSuchElementException("no button with text " + option.getName()));
+
+    button.click();
+    wait.until(attributeContains(button, "class", "selected"));
   }
 }

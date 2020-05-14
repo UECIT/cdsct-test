@@ -1,5 +1,7 @@
 package uk.nhs.ctp.pageobject;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +26,11 @@ public class LoginPage extends PageObject {
     usernameField.sendKeys(user.getUsername());
     passwordField.sendKeys(user.getPassword());
     loginButton.click();
+  }
+
+  @Override
+  public boolean onPage() {
+    return wait.until(visibilityOf(loginButton)).isDisplayed();
   }
 
 }
