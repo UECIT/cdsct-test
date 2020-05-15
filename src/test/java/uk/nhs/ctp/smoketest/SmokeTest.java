@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.Jurisdiction;
 import uk.nhs.ctp.model.Patient;
 import uk.nhs.ctp.model.SelectionMode;
@@ -53,7 +54,7 @@ public class SmokeTest extends EMSTest {
     mainPage.selectUserType(UserType.PATIENT);
     mainPage.selectJurisdiction(Jurisdiction.UK);
     mainPage.selectSelectionMode(SelectionMode.MANUAL);
-    //TODO: select cdss
+    mainPage.selectCDSS(CDSS.LOCAL);
     mainPage.selectServiceDefinition(ServiceDefinition.CHEST_PAINS);
     mainPage.launchTriage();
   }

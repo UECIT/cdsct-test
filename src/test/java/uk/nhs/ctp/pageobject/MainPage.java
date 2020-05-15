@@ -14,6 +14,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.Jurisdiction;
 import uk.nhs.ctp.model.Patient;
 import uk.nhs.ctp.model.SelectableByName;
@@ -33,6 +34,7 @@ public class MainPage extends PageObject {
   private static final String USER_TYPE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select User Type\"]]//button";
   private static final String JURISDICTION_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Jurisdiction\"]]//button";
   private static final String SELECTION_MODE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Service Definition Selection Mode\"]]//button";
+  private static final String CDSS_SELECTION_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select CDSS\"]]//button";
   private static final String LAUNCH_PATH = "//div[@class=\"launchSection\"]//button";
 
   @FindBy(xpath = PATIENT_BUTTONS_PATH)
@@ -49,6 +51,12 @@ public class MainPage extends PageObject {
 
   @FindBy(xpath = SELECTION_MODE_BUTTONS_PATH)
   private List<WebElement> selectionModeButtons;
+
+  @FindBy(xpath = CDSS_SELECTION_BUTTONS_PATH)
+  private List<WebElement> cdssSelectionButtons;
+
+  @FindBy(id = "mat-select-0")
+  private WebElement serviceSelectionDropdown;
 
   @FindBy(xpath = LAUNCH_PATH)
   private WebElement launchButton;
@@ -93,8 +101,16 @@ public class MainPage extends PageObject {
     selectButtonWithText(selectionModeButtons, selectionMode);
   }
 
+  public void selectCDSS(CDSS cdss) {
+    selectButtonWithText(cdssSelectionButtons, cdss);
+  }
+
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
-    //todo: implement me
+    // Angular does not use 'select's so we have to do this manually
+    wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
+    WebElement option = webdriver.findElement(
+        By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]"));
+    wait.until(elementToBeClickable(option)).click();
   }
 
   public boolean triageReady() {
