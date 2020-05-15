@@ -3,9 +3,11 @@ package uk.nhs.ctp.smoketest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.nhs.ctp.model.Answers;
@@ -34,6 +36,7 @@ public class SmokeTest extends EMSTest {
 
   @Before
   public void setup() {
+    WebDriver driver = ems.reset();
     driver.get(emsUrl);
     loginPage = new LoginPage(driver);
     mainPage = new MainPage(driver);
@@ -70,6 +73,11 @@ public class SmokeTest extends EMSTest {
     triagePage.answerQuestion("Have you been stabbed or shot by a gun?", Answers.YES);
     triagePage.answerQuestion("Bleeding from the injury?", Answers.YES);
     triagePage.answerQuestion("There is excessive bleeding, pulsating blood loss", Answers.YES);
+  }
+
+  @After
+  public void cleanup() {
+    ems.getDriver().close();
   }
 
 }

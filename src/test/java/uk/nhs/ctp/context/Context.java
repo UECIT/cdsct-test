@@ -15,14 +15,17 @@ import uk.nhs.ctp.model.EMS;
 @Slf4j
 public class Context {
 
+  private static String DRIVER_LOCATION;
+
   @Value("${ems.url}")
   private String emsUrl;
 
   @Value("${driver.location}")
-  private String driverLocation;
+  public void setDriverLocation(String driverLocation) {
+    DRIVER_LOCATION = driverLocation;
+  }
 
-  @Bean
-  public WebDriver driver() {
+  public static WebDriver driver() {
     if (Boolean.parseBoolean(System.getenv("CI"))) {
       ChromeOptions options = new ChromeOptions();
       options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
@@ -30,8 +33,8 @@ public class Context {
       return new ChromeDriver(options);
     }
 
-    System.setProperty("webdriver.chrome.driver", driverLocation);
-    log.info("Starting chrome driver at {}", driverLocation);
+    System.setProperty("webdriver.chrome.driver", DRIVER_LOCATION);
+    log.info("Starting chrome driver at {}", DRIVER_LOCATION);
     return new ChromeDriver();
   }
 
