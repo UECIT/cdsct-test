@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CDSS implements SelectableByName {
 
-  LOCAL("Local");
+  LOCAL("Local"),
+  DOCKERIZED("Dockerized CDSS");
 
   private String name;
 

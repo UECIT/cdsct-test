@@ -62,7 +62,7 @@ public class SmokeTest extends EMSTest {
     mainPage.selectUserType(UserType.PATIENT);
     mainPage.selectJurisdiction(Jurisdiction.UK);
     mainPage.selectSelectionMode(SelectionMode.MANUAL);
-    mainPage.selectCDSS(CDSS.LOCAL);
+    mainPage.selectCDSS(CDSS.DOCKERIZED);
     mainPage.selectServiceDefinition(ServiceDefinition.CHEST_PAINS);
     mainPage.launchTriage();
     assertThat(triagePage.onPage(), is(true));
