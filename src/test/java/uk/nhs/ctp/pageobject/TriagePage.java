@@ -89,6 +89,11 @@ public class TriagePage extends PageObject {
   }
 
   public Optional<Result> getInterimResult() {
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     wait.until(elementToBeClickable(interimResultTab)).click();
 
     if (referralRequest.isEmpty()) {
