@@ -30,7 +30,9 @@ public class Context {
       ChromeOptions options = new ChromeOptions();
       options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
       log.info("Starting chrome driver for profile 'CI'");
-      return new ChromeDriver(options);
+      ChromeDriver driver = new ChromeDriver(options);
+      driver.manage().window().maximize();
+      return driver;
     }
 
     System.setProperty("webdriver.chrome.driver", DRIVER_LOCATION);
