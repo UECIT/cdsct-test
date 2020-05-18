@@ -4,6 +4,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClick
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.NoSuchElementException;
@@ -21,6 +22,7 @@ public class TriagePage extends PageObject {
       "//div[@class=\"mat-tab-labels\"]/div[.//div[text()=\"Interim result:\"]]";
   private static final String INTERIM_CARE_TAB =
       "//div[@class=\"mat-tab-labels\"]/div[.//div[text()=\"Interim Care Advice\"]]";
+  private static final String RESULT_TITLE = "//mat-card-title[contains(text(), \"Result\")]";
 
   // Past questions section has class 'question' so we have to use this xpath
   @FindBy(xpath = QUESTION_PATH)
@@ -41,6 +43,9 @@ public class TriagePage extends PageObject {
   //used for both referral requests and care advice depending on which tab has been selected.
   @FindBy(xpath = "//mat-card//mat-card-content")
   private List<WebElement> interimContent;
+
+  @FindBy(xpath = RESULT_TITLE)
+  private WebElement resultTitle;
 
   public TriagePage(WebDriver driver) {
     super(driver);
@@ -68,14 +73,29 @@ public class TriagePage extends PageObject {
   public List<CareAdvice> getInterimCareAdvice() {
     wait.until(elementToBeClickable(interimCareAdviceTab)).click();
     return wait.until((visibilityOfAllElements(interimContent))).stream()
-        .map(CareAdvice::from)
+        .map(el -> CareAdvice.from(el, wait))
         .collect(Collectors.toList());
   }
 
   public List<Result> getInterimResult() {
     wait.until(elementToBeClickable(interimResultTab)).click();
-    return interimContent.stream()
-        .map(Result::from)
+    //TODO: CDSCT-XXX - add ids to the tab content elements so we can wait for those explicitly
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    if (interimContent.isEmpty()) {
+      return Collections.emptyList();
+    }
+    return wait.until(visibilityOfAllElements(interimContent)).stream()
+        .map(el -> Result.from(el, wait))
         .collect(Collectors.toList());
+  }
+
+  public String getResultTitle() {
+    return wait.until(visibilityOf(resultTitle))
+        .getText()
+        .split(": ")[1];
   }
 }
