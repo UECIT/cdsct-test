@@ -9,7 +9,7 @@ public abstract class PageObject {
   protected WebDriver webdriver;
   protected WebDriverWait wait;
 
-  private static final int TIMEOUT_SECONDS = 10;
+  private static final int TIMEOUT_SECONDS = 30;
 
   public PageObject(WebDriver driver) {
     PageFactory.initElements(driver, this);
