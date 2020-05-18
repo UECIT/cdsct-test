@@ -29,3 +29,8 @@ jobs:
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: Clean up
       run: docker-compose down
+    - name: upload screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: screenshots
+        path: target/surefire-reports/screenshot-smoke.png

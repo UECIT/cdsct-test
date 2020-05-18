@@ -14,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import uk.nhs.ctp.model.CareAdvice;
 import uk.nhs.ctp.model.Result;
+import uk.nhs.ctp.util.SeleniumUtil;
 
 public class TriagePage extends PageObject {
 
@@ -89,12 +90,10 @@ public class TriagePage extends PageObject {
   }
 
   public Optional<Result> getInterimResult() {
-    try {
-      Thread.sleep(500);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    wait.until(elementToBeClickable(interimResultTab)).click();
+    wait.until(elementToBeClickable(interimResultTab).andThen(webElement -> {
+      SeleniumUtil.takeScreenshot(webdriver, "smoke");
+      return webElement;
+    })).click();
 
     if (referralRequest.isEmpty()) {
       return Optional.empty();
