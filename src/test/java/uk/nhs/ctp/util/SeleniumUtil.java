@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 public class SeleniumUtil {
 
   public void takeScreenshot(WebDriver driver, String filename) {
-    new File(("target/surefire-reports/")).mkdirs();
+    new File(("target/screenshots/")).mkdirs();
     try {
       FileOutputStream out = new FileOutputStream("target/screenshots/screenshot-" + filename + ".png");
       out.write( ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES));
