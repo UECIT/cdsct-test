@@ -34,4 +34,4 @@ jobs:
       if: failure()
       with:
         name: screenshots
-        path: target/surefire-reports/screenshot-smoke.png
+        path: target/screenshots/*

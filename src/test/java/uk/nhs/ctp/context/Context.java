@@ -1,6 +1,7 @@
 package uk.nhs.ctp.context;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -28,9 +29,11 @@ public class Context {
   public static WebDriver driver() {
     if (Boolean.parseBoolean(System.getenv("CI"))) {
       ChromeOptions options = new ChromeOptions();
-      options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--start-maximised");
+      options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
       log.info("Starting chrome driver for profile 'CI'");
-      return new ChromeDriver(options);
+      WebDriver driver = new ChromeDriver(options);
+      driver.manage().window().setSize(new Dimension(1920, 1080));
+      return driver;
     }
 
     System.setProperty("webdriver.chrome.driver", DRIVER_LOCATION);
