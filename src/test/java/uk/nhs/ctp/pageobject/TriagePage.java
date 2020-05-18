@@ -4,8 +4,9 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClick
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
-import java.util.Collections;
+import com.google.common.collect.Iterables;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -40,9 +41,11 @@ public class TriagePage extends PageObject {
   @FindBy(xpath = INTERIM_CARE_TAB)
   private WebElement interimCareAdviceTab;
 
-  //used for both referral requests and care advice depending on which tab has been selected.
   @FindBy(xpath = "//mat-card//mat-card-content")
   private List<WebElement> interimContent;
+
+  @FindBy(tagName = "app-referral-request")
+  private List<WebElement> referralRequest;
 
   @FindBy(xpath = RESULT_TITLE)
   private WebElement resultTitle;
@@ -72,25 +75,28 @@ public class TriagePage extends PageObject {
 
   public List<CareAdvice> getInterimCareAdvice() {
     wait.until(elementToBeClickable(interimCareAdviceTab)).click();
+
+    //TODO: CDSCT-152 Extract care advice to its own id'd component so we don't have to sleep
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
     return wait.until((visibilityOfAllElements(interimContent))).stream()
         .map(el -> CareAdvice.from(el, wait))
         .collect(Collectors.toList());
   }
 
-  public List<Result> getInterimResult() {
+  public Optional<Result> getInterimResult() {
     wait.until(elementToBeClickable(interimResultTab)).click();
-    //TODO: CDSCT-XXX - add ids to the tab content elements so we can wait for those explicitly
-    try {
-      Thread.sleep(500);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+
+    if (referralRequest.isEmpty()) {
+      return Optional.empty();
     }
-    if (interimContent.isEmpty()) {
-      return Collections.emptyList();
-    }
-    return wait.until(visibilityOfAllElements(interimContent)).stream()
-        .map(el -> Result.from(el, wait))
-        .collect(Collectors.toList());
+
+    Result result = Result.from(Iterables.getOnlyElement(referralRequest), wait);
+    return Optional.of(result);
   }
 
   public String getResultTitle() {

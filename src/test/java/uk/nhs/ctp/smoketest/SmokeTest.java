@@ -1,7 +1,6 @@
 package uk.nhs.ctp.smoketest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
@@ -74,9 +73,9 @@ public class SmokeTest extends EMSTest {
     triagePage.answerQuestion("Has the pain in your chest been caused by an injury?", Answers.YES);
     triagePage.answerQuestion("Have you been stabbed or shot by a gun?", Answers.YES);
     assertThat(triagePage.getInterimCareAdvice(), hasSize(1));
-    assertThat(triagePage.getInterimResult(), empty());
+    assertThat(triagePage.getInterimResult().isPresent(), is(false));
     triagePage.answerQuestion("Bleeding from the injury?", Answers.YES);
-    assertThat(triagePage.getInterimResult(), hasSize(1));
+    assertThat(triagePage.getInterimResult().isPresent(), is(true));
     assertThat(triagePage.getInterimCareAdvice(), hasSize(2));
     triagePage.answerQuestion("There is excessive bleeding, pulsating blood loss", Answers.YES);
     assertThat(triagePage.getResultTitle(), is("Call 999"));
