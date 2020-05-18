@@ -28,11 +28,9 @@ public class Context {
   public static WebDriver driver() {
     if (Boolean.parseBoolean(System.getenv("CI"))) {
       ChromeOptions options = new ChromeOptions();
-      options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+      options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--start-maximised");
       log.info("Starting chrome driver for profile 'CI'");
-      ChromeDriver driver = new ChromeDriver(options);
-      driver.manage().window().maximize();
-      return driver;
+      return new ChromeDriver(options);
     }
 
     System.setProperty("webdriver.chrome.driver", DRIVER_LOCATION);
