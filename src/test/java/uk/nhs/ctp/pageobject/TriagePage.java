@@ -2,6 +2,7 @@ package uk.nhs.ctp.pageobject;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +15,12 @@ import uk.nhs.ctp.model.Result;
 
 public class TriagePage extends PageObject {
 
-  public static final String QUESTION_PATH =
+  private static final String QUESTION_PATH =
       "//app-questionnaire//div[contains(concat(' ',normalize-space(@class),' '),' question ')]";
+  private static final String INTERIM_RESULT_TAB =
+      "//div[@class=\"mat-tab-labels\"]/div[.//div[text()=\"Interim result:\"]]";
+  private static final String INTERIM_CARE_TAB =
+      "//div[@class=\"mat-tab-labels\"]/div[.//div[text()=\"Interim Care Advice\"]]";
 
   // Past questions section has class 'question' so we have to use this xpath
   @FindBy(xpath = QUESTION_PATH)
@@ -27,13 +32,14 @@ public class TriagePage extends PageObject {
   @FindBy(id = "continue")
   private WebElement continueButton;
 
-  @FindBy(id = "mat-tab-label-0-0") //these ids for the tabs are unreliable - fix
+  @FindBy(xpath = INTERIM_RESULT_TAB)
   private WebElement interimResultTab;
 
-  @FindBy(id = "mat-tab-label-0-1")
+  @FindBy(xpath = INTERIM_CARE_TAB)
   private WebElement interimCareAdviceTab;
 
-  @FindBy(xpath = "//mat-card//mat-card-content") //used for both referral requests and care advice
+  //used for both referral requests and care advice depending on which tab has been selected.
+  @FindBy(xpath = "//mat-card//mat-card-content")
   private List<WebElement> interimContent;
 
   public TriagePage(WebDriver driver) {
@@ -61,7 +67,7 @@ public class TriagePage extends PageObject {
 
   public List<CareAdvice> getInterimCareAdvice() {
     wait.until(elementToBeClickable(interimCareAdviceTab)).click();
-    return interimContent.stream()
+    return wait.until((visibilityOfAllElements(interimContent))).stream()
         .map(CareAdvice::from)
         .collect(Collectors.toList());
   }
