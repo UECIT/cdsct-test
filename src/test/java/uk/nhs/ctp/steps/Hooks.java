@@ -20,25 +20,20 @@ public class Hooks {
   @Autowired
   private String emsUrl;
 
-  @Autowired
-  private WebDriver driver;
-
   @Before
   public void setup() {
-    ems.reset();
-    driver.get(emsUrl);
+    ems.reset().get(emsUrl);
     log.info("Started web driver at {}", emsUrl);
   }
 
   @After
   public void cleanup(Scenario scenario) {
+    WebDriver driver = ems.getDriver();
     if (scenario.isFailed()) {
       byte[] screenshotAs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
       scenario.embed(screenshotAs, "image/png", LocalDateTime.now().toString());
     }
-
-    driver.quit();
-    log.info("Quit web driver");
+    driver.close();
   }
 
 }

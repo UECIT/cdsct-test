@@ -10,4 +10,11 @@ public class User {
   String username;
   String password;
 
+  public static User admin() {
+    return User.builder()
+        .username("admin")
+        .password("admin@123")
+        .build();
+  }
+
 }

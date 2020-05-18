@@ -14,22 +14,18 @@ public class LoginSteps extends EMSTest {
 
   @Given("^an admin user$")
   public void setupAdminUser() {
-    User admin = User.builder()
-        .username("admin")
-        .password("admin@123")
-        .build();
-    ems.setUser(admin);
+    ems.setUser(User.admin());
   }
 
   @When("^the user logs in$")
   public void login() {
-    LoginPage loginPage = new LoginPage(driver);
+    LoginPage loginPage = new LoginPage(ems.getDriver());
     loginPage.login(ems.getUser());
   }
 
   @Then("^the EMS home page is displayed$")
   public void assertHomePage() {
-    MainPage mainPage = new MainPage(driver);
+    MainPage mainPage = new MainPage(ems.getDriver());
     assertThat(mainPage.onPage(), is(true));
   }
 }

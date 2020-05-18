@@ -29,3 +29,9 @@ jobs:
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: Clean up
       run: docker-compose down
+    - name: upload screenshots
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: screenshots
+        path: target/screenshots/*
