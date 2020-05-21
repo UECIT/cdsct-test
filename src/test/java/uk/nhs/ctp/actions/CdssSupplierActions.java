@@ -23,6 +23,7 @@ public class CdssSupplierActions {
     mainPage.manageCdssSuppliers();
     manageCdssSuppliersPage.createNewSupplier();
     createNewSupplierPage.create(ems.getCdssSupplier());
+    manageCdssSuppliersPage.onPage();
   }
 
 }

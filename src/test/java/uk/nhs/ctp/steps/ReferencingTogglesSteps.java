@@ -37,7 +37,6 @@ public class ReferencingTogglesSteps extends EMSTest {
     ems.setUser(User.admin());
 
     CdssSupplierActions.loginCreateSupplier(ems);
-    SeleniumUtil.takeScreenshot(ems.getDriver(), "referenced_cdss_created");
   }
 
   @Given("sending contained resources")
