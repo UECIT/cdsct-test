@@ -5,7 +5,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContain
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
-import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import java.util.List;
@@ -23,7 +22,6 @@ import uk.nhs.ctp.model.SelectionMode;
 import uk.nhs.ctp.model.ServiceDefinition;
 import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.UserType;
-import uk.nhs.ctp.util.SeleniumUtil;
 
 public class MainPage extends PageObject {
 
@@ -73,6 +71,9 @@ public class MainPage extends PageObject {
   @FindBy(id = "mat-select-0")
   private WebElement serviceSelectionDropdown;
 
+  @FindBy(tagName = "app-main")
+  private WebElement component;
+
   @FindBy(xpath = LAUNCH_PATH)
   private WebElement launchButton;
 
@@ -84,8 +85,7 @@ public class MainPage extends PageObject {
 
   @Override
   public boolean onPage() {
-    return wait.until(urlContains("main"))
-        && menuBar.isDisplayed();
+    return wait.until(visibilityOf(component)).isDisplayed();
   }
 
   public void dismissSnackBar() {
@@ -98,6 +98,7 @@ public class MainPage extends PageObject {
 
   public void home() {
     wait.until(elementToBeClickable(homeButton)).click();
+    onPage();
   }
 
   public void manageCdssSuppliers() {
@@ -126,7 +127,6 @@ public class MainPage extends PageObject {
   }
 
   public void selectCDSS(CDSS cdss) {
-    SeleniumUtil.takeScreenshot(webdriver, "selectCDSS_" + cdss.getName());
     selectButtonWithText(cdssSelectionButtons, cdss);
   }
 
