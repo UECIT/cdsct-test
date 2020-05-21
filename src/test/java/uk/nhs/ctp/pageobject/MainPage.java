@@ -29,7 +29,8 @@ public class MainPage extends PageObject {
     super(driver);
   }
 
-  public static final String ADMIN_BUTTON_PATH = "//button[text()=\"Admin\"]";
+  public static final String ADMIN_BUTTON_PATH = "//button[span[text()=\"Admin\"]]";
+  public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
   public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
 
   private static final String PATIENT_BUTTONS_PATH = "(//patient-selection//button)[position()<last()]";
@@ -39,6 +40,9 @@ public class MainPage extends PageObject {
   private static final String SELECTION_MODE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Service Definition Selection Mode\"]]//button";
   private static final String CDSS_SELECTION_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select CDSS\"]]//button";
   private static final String LAUNCH_PATH = "//div[@class=\"launchSection\"]//button";
+
+  @FindBy(xpath = HOME_BUTTON_PATH)
+  private WebElement homeButton;
 
   @FindBy(xpath = ADMIN_BUTTON_PATH)
   private WebElement adminButton;
@@ -83,11 +87,15 @@ public class MainPage extends PageObject {
   }
 
   public void dismissSnackBar() {
-    if (snackBar.isDisplayed()) {
+    if (wait.until(visibilityOf(snackBar)).isDisplayed()) {
       WebElement understandButton = snackBar.findElement(By.className("mat-button"));
       wait.until(elementToBeClickable(understandButton)).click();
     }
     wait.until(not(presenceOfAllElementsLocatedBy(tagName("snack-bar-container"))));
+  }
+
+  public void home() {
+    wait.until(elementToBeClickable(homeButton)).click();
   }
 
   public void manageCdssSuppliers() {
