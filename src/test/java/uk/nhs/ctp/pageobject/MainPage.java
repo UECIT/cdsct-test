@@ -14,6 +14,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.Jurisdiction;
 import uk.nhs.ctp.model.Patient;
@@ -147,7 +148,7 @@ public class MainPage extends PageObject {
   }
 
   private void selectButtonWithText(List<WebElement> elements, SelectableByName option) {
-    WebElement button = elements.stream()
+    WebElement button = wait.until(ExpectedConditions.visibilityOfAllElements(elements)).stream()
         .filter(elem -> elem.getText().contains(option.getName()))
         .findAny()
         .orElseThrow(() -> new NoSuchElementException("no button with text " + option.getName()));
