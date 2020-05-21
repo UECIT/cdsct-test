@@ -9,6 +9,8 @@ public class EMS {
 
   WebDriver driver;
   User user;
+  CdssSupplier cdssSupplier;
+  CDSS cdss;
 
   /**
    * Reset the test environment
@@ -19,5 +21,4 @@ public class EMS {
     driver = Context.driver();
     return driver;
   }
-
 }

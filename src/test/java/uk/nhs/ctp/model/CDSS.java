@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum CDSS implements SelectableByName {
 
   LOCAL("Local"),
-  DOCKERIZED("Dockerized CDSS");
+  DOCKERIZED("Dockerized CDSS"),
+  REFERENCED("Referenced"),
+  CONTAINED("Contained");
 
   private String name;
 

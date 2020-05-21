@@ -10,7 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.nhs.ctp.context.Context;
 import uk.nhs.ctp.model.Answers;
 import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.Jurisdiction;
@@ -25,6 +27,7 @@ import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.TriagePage;
 import uk.nhs.ctp.steps.EMSTest;
 
+@ContextConfiguration(classes = Context.class)
 @RunWith(SpringRunner.class)
 public class SmokeTest extends EMSTest {
 

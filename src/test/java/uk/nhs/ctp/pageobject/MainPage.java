@@ -5,7 +5,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContain
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
-import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import java.util.List;
@@ -14,6 +13,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.Jurisdiction;
 import uk.nhs.ctp.model.Patient;
@@ -29,6 +29,10 @@ public class MainPage extends PageObject {
     super(driver);
   }
 
+  public static final String ADMIN_BUTTON_PATH = "//button[span[text()=\"Admin\"]]";
+  public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
+  public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
+
   private static final String PATIENT_BUTTONS_PATH = "(//patient-selection//button)[position()<last()]";
   private static final String SETTING_CONTEXT_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Setting Context\"]]//button";
   private static final String USER_TYPE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select User Type\"]]//button";
@@ -36,6 +40,15 @@ public class MainPage extends PageObject {
   private static final String SELECTION_MODE_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Service Definition Selection Mode\"]]//button";
   private static final String CDSS_SELECTION_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select CDSS\"]]//button";
   private static final String LAUNCH_PATH = "//div[@class=\"launchSection\"]//button";
+
+  @FindBy(xpath = HOME_BUTTON_PATH)
+  private WebElement homeButton;
+
+  @FindBy(xpath = ADMIN_BUTTON_PATH)
+  private WebElement adminButton;
+
+  @FindBy(xpath = MANAGE_CDSS_SUPPLIERS_PATH)
+  private WebElement manageCdssSuppliersButton;
 
   @FindBy(xpath = PATIENT_BUTTONS_PATH)
   private List<WebElement> patientButtons;
@@ -58,6 +71,9 @@ public class MainPage extends PageObject {
   @FindBy(id = "mat-select-0")
   private WebElement serviceSelectionDropdown;
 
+  @FindBy(tagName = "app-main")
+  private WebElement component;
+
   @FindBy(xpath = LAUNCH_PATH)
   private WebElement launchButton;
 
@@ -69,16 +85,25 @@ public class MainPage extends PageObject {
 
   @Override
   public boolean onPage() {
-    return wait.until(urlContains("main"))
-        && menuBar.isDisplayed();
+    return wait.until(visibilityOf(component)).isDisplayed();
   }
 
   public void dismissSnackBar() {
-    if (snackBar.isDisplayed()) {
+    if (wait.until(visibilityOf(snackBar)).isDisplayed()) {
       WebElement understandButton = snackBar.findElement(By.className("mat-button"));
       wait.until(elementToBeClickable(understandButton)).click();
     }
     wait.until(not(presenceOfAllElementsLocatedBy(tagName("snack-bar-container"))));
+  }
+
+  public void home() {
+    wait.until(elementToBeClickable(homeButton)).click();
+    onPage();
+  }
+
+  public void manageCdssSuppliers() {
+    wait.until(elementToBeClickable(adminButton)).click();
+    wait.until(elementToBeClickable(manageCdssSuppliersButton)).click();
   }
 
   public void selectPatient(Patient patient) {
@@ -125,7 +150,7 @@ public class MainPage extends PageObject {
   }
 
   private void selectButtonWithText(List<WebElement> elements, SelectableByName option) {
-    WebElement button = elements.stream()
+    WebElement button = wait.until(ExpectedConditions.visibilityOfAllElements(elements)).stream()
         .filter(elem -> elem.getText().contains(option.getName()))
         .findAny()
         .orElseThrow(() -> new NoSuchElementException("no button with text " + option.getName()));
