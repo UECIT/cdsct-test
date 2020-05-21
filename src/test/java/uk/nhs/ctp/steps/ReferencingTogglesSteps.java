@@ -20,6 +20,7 @@ import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.TriagePage;
+import uk.nhs.ctp.util.SeleniumUtil;
 
 public class ReferencingTogglesSteps extends EMSTest {
 
@@ -36,6 +37,7 @@ public class ReferencingTogglesSteps extends EMSTest {
     ems.setUser(User.admin());
 
     CdssSupplierActions.loginCreateSupplier(ems);
+    SeleniumUtil.takeScreenshot(ems.getDriver(), "referenced_cdss_created");
   }
 
   @Given("sending contained resources")
