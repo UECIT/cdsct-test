@@ -23,6 +23,7 @@ import uk.nhs.ctp.model.SelectionMode;
 import uk.nhs.ctp.model.ServiceDefinition;
 import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.UserType;
+import uk.nhs.ctp.util.SeleniumUtil;
 
 public class MainPage extends PageObject {
 
@@ -125,6 +126,7 @@ public class MainPage extends PageObject {
   }
 
   public void selectCDSS(CDSS cdss) {
+    SeleniumUtil.takeScreenshot(webdriver, "selectCDSS");
     selectButtonWithText(cdssSelectionButtons, cdss);
   }
 
