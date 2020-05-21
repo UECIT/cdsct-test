@@ -35,3 +35,9 @@ jobs:
       with:
         name: screenshots
         path: target/screenshots/*
+    - name: upload report
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: report
+        path: target/report/*

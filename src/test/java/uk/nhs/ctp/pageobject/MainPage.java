@@ -126,7 +126,7 @@ public class MainPage extends PageObject {
   }
 
   public void selectCDSS(CDSS cdss) {
-    SeleniumUtil.takeScreenshot(webdriver, "selectCDSS");
+    SeleniumUtil.takeScreenshot(webdriver, "selectCDSS_" + cdss.getName());
     selectButtonWithText(cdssSelectionButtons, cdss);
   }
 
