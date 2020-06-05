@@ -18,19 +18,25 @@ public class CdssSupplierActions {
   public void loginCreateSupplier(EMS ems, boolean expectSnackbar) {
     WebDriver driver = ems.getDriver();
     MainPage mainPage = new MainPage(driver);
-    ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
-    CreateNewSupplierPage createNewSupplierPage = new CreateNewSupplierPage(driver);
 
     login(ems);
     if (expectSnackbar) {
       mainPage.dismissSnackBar();
     }
+    registerCDSS(ems);
+  }
+
+  public void registerCDSS(EMS ems) {
+    WebDriver driver = ems.getDriver();
+    MainPage mainPage = new MainPage(driver);
+    ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
+    CreateNewSupplierPage createNewSupplierPage = new CreateNewSupplierPage(driver);
+
     mainPage.manageCdssSuppliers();
     manageCdssSuppliersPage.createNewSupplier();
     createNewSupplierPage.create(ems.getCdssSupplier());
     manageCdssSuppliersPage.onPage();
   }
-
 
   public void login(EMS ems) {
     WebDriver driver = ems.getDriver();
