@@ -17,12 +17,11 @@ public class CdssSupplierActions {
 
   public void loginCreateSupplier(EMS ems, boolean expectSnackbar) {
     WebDriver driver = ems.getDriver();
-    LoginPage loginPage = new LoginPage(driver);
     MainPage mainPage = new MainPage(driver);
     ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
     CreateNewSupplierPage createNewSupplierPage = new CreateNewSupplierPage(driver);
 
-    loginPage.login(ems.getUser());
+    login(ems);
     if (expectSnackbar) {
       mainPage.dismissSnackBar();
     }
@@ -32,6 +31,13 @@ public class CdssSupplierActions {
     manageCdssSuppliersPage.onPage();
   }
 
+
+  public void login(EMS ems) {
+    WebDriver driver = ems.getDriver();
+    LoginPage loginPage = new LoginPage(driver);
+
+    loginPage.login(ems.getUser());
+  }
 
   public void logout(EMS ems) {
     WebDriver driver = ems.getDriver();

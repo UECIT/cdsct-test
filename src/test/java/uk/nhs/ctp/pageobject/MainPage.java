@@ -8,6 +8,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllEle
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -141,6 +142,12 @@ public class MainPage extends PageObject {
 
   public void selectCDSS(CDSS cdss) {
     selectButtonWithText(cdssSelectionButtons, cdss);
+  }
+
+  public List<String> listCDSS() {
+    return wait.until(ExpectedConditions.visibilityOfAllElements(cdssSelectionButtons)).stream()
+        .map(elem -> elem.getText())
+        .collect(Collectors.toList());
   }
 
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
