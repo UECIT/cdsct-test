@@ -35,7 +35,7 @@ public class SupplierPartitioningSteps extends EMSTest {
       .build();
 
   @Given("two supplier accounts")
-  public void sendingReferencedResources() {
+  public void createSupplierCDSSInstances() {
     ems.setCdss(CDSS.REFERENCED);
     ems.setCdssSupplier(cdss1);
     ems.setUser(User.supplier1());
