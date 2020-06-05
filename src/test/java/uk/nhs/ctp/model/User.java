@@ -17,4 +17,18 @@ public class User {
         .build();
   }
 
+  public static User supplier1() {
+    return User.builder()
+        .username("supplier1")
+        .password("admin@123")
+        .build();
+  }
+
+  public static User supplier2() {
+    return User.builder()
+        .username("supplier2")
+        .password("admin@123")
+        .build();
+  }
+
 }

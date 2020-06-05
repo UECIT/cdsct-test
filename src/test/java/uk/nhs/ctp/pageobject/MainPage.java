@@ -30,6 +30,8 @@ public class MainPage extends PageObject {
   }
 
   public static final String ADMIN_BUTTON_PATH = "//button[span[text()=\"Admin\"]]";
+  public static final String ACCOUNT_BUTTON_PATH = "//button[span[text()=\"Account\"]]";
+  public static final String LOGOUT_BUTTON_PATH = "//button[text()=\"Log Off\"]";
   public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
   public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
 
@@ -46,6 +48,12 @@ public class MainPage extends PageObject {
 
   @FindBy(xpath = ADMIN_BUTTON_PATH)
   private WebElement adminButton;
+
+  @FindBy(xpath = ACCOUNT_BUTTON_PATH)
+  private WebElement accountButton;
+
+  @FindBy(xpath = LOGOUT_BUTTON_PATH)
+  private WebElement logoutButton;
 
   @FindBy(xpath = MANAGE_CDSS_SUPPLIERS_PATH)
   private WebElement manageCdssSuppliersButton;
@@ -99,6 +107,11 @@ public class MainPage extends PageObject {
   public void home() {
     wait.until(elementToBeClickable(homeButton)).click();
     onPage();
+  }
+
+  public void logout() {
+    wait.until(elementToBeClickable(accountButton)).click();
+    wait.until(elementToBeClickable(logoutButton)).click();
   }
 
   public void manageCdssSuppliers() {
