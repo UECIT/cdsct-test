@@ -1,4 +1,4 @@
-Feature: Referencing toggles
+Feature: Supplier Partitioning
 
   Scenario: Supplier data is partitioned
     Given two supplier accounts
