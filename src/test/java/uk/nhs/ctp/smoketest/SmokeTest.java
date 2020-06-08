@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.nhs.ctp.context.Context;
 import uk.nhs.ctp.model.Answers;
 import uk.nhs.ctp.model.CDSS;
+import uk.nhs.ctp.model.CdssSupplier;
+import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
 import uk.nhs.ctp.model.Jurisdiction;
 import uk.nhs.ctp.model.Patient;
 import uk.nhs.ctp.model.SelectionMode;
@@ -22,8 +24,10 @@ import uk.nhs.ctp.model.ServiceDefinition;
 import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
+import uk.nhs.ctp.pageobject.CreateNewSupplierPage;
 import uk.nhs.ctp.pageobject.LoginPage;
 import uk.nhs.ctp.pageobject.MainPage;
+import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.TriagePage;
 import uk.nhs.ctp.steps.EMSTest;
 
@@ -37,6 +41,8 @@ public class SmokeTest extends EMSTest {
   private LoginPage loginPage;
   private MainPage mainPage;
   private TriagePage triagePage;
+  private ManageCdssSuppliersPage manageCdssSuppliersPage;
+  private CreateNewSupplierPage createNewSupplierPage;
 
   @Before
   public void setup() {
@@ -45,11 +51,15 @@ public class SmokeTest extends EMSTest {
     loginPage = new LoginPage(driver);
     mainPage = new MainPage(driver);
     triagePage = new TriagePage(driver);
+
+    manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
+    createNewSupplierPage = new CreateNewSupplierPage(driver);
   }
 
   @Test
   public void smokeTest() {
     login();
+    createCDSS();
     startTriage();
     performTriage();
   }
@@ -57,10 +67,27 @@ public class SmokeTest extends EMSTest {
   private void login() {
     loginPage.login(User.admin());
     assertThat(mainPage.onPage(), is(true));
+    mainPage.dismissSnackBar();
+  }
+
+  private void createCDSS() {
+    ems.setCdssSupplier(CdssSupplier.builder()
+        .name(CDSS.DOCKERIZED.getName())
+        .dataRefType(ReferenceType.REFERENCE)
+        .paramsRefType(ReferenceType.REFERENCE)
+        .baseUrl("http://cdss:8080/fhir/")
+        .build());
+
+    mainPage.manageCdssSuppliers();
+    manageCdssSuppliersPage.createNewSupplier();
+    createNewSupplierPage.create(ems.getCdssSupplier());
+    manageCdssSuppliersPage.onPage();
   }
 
   private void startTriage() {
-    mainPage.dismissSnackBar();
+    mainPage.home();
+    mainPage.onPage();
+
     mainPage.selectPatient(Patient.JOE_BLOGGS);
     mainPage.selectSettingContext(SettingContext.ONLINE);
     mainPage.selectUserType(UserType.PATIENT);

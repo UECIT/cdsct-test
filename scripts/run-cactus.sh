@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 healthcheck() {
-    until [[ $(curl -s -o /dev/null -w %{http_code} $1) == "200" ]] ; do
+    until [[ $(curl -s -o /dev/null -w %{http_code} $1) =~ 200|401|403 ]] ; do
         echo "healthcheck: $1 attempt $attempt_counter"
         if [ ${attempt_counter} -eq ${max_attempts} ];then
         echo "Max attempts reached"
@@ -15,6 +15,7 @@ healthcheck() {
 
 echo "Planting a cactus..."
 
+docker-compose pull -q
 docker-compose up -d
 
 attempt_counter=1

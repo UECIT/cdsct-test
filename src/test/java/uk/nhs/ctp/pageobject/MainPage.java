@@ -8,6 +8,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllEle
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -30,6 +31,8 @@ public class MainPage extends PageObject {
   }
 
   public static final String ADMIN_BUTTON_PATH = "//button[span[text()=\"Admin\"]]";
+  public static final String ACCOUNT_BUTTON_PATH = "//button[span[text()=\"Account\"]]";
+  public static final String LOGOUT_BUTTON_PATH = "//button[text()=\"Log Off\"]";
   public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
   public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
 
@@ -46,6 +49,12 @@ public class MainPage extends PageObject {
 
   @FindBy(xpath = ADMIN_BUTTON_PATH)
   private WebElement adminButton;
+
+  @FindBy(xpath = ACCOUNT_BUTTON_PATH)
+  private WebElement accountButton;
+
+  @FindBy(xpath = LOGOUT_BUTTON_PATH)
+  private WebElement logoutButton;
 
   @FindBy(xpath = MANAGE_CDSS_SUPPLIERS_PATH)
   private WebElement manageCdssSuppliersButton;
@@ -101,6 +110,11 @@ public class MainPage extends PageObject {
     onPage();
   }
 
+  public void logout() {
+    wait.until(elementToBeClickable(accountButton)).click();
+    wait.until(elementToBeClickable(logoutButton)).click();
+  }
+
   public void manageCdssSuppliers() {
     wait.until(elementToBeClickable(adminButton)).click();
     wait.until(elementToBeClickable(manageCdssSuppliersButton)).click();
@@ -128,6 +142,12 @@ public class MainPage extends PageObject {
 
   public void selectCDSS(CDSS cdss) {
     selectButtonWithText(cdssSelectionButtons, cdss);
+  }
+
+  public List<String> listCDSS() {
+    return wait.until(ExpectedConditions.visibilityOfAllElements(cdssSelectionButtons)).stream()
+        .map(elem -> elem.getText())
+        .collect(Collectors.toList());
   }
 
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {

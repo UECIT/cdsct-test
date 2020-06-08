@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder(toBuilder = true)
-public class CdssSupplier {
+public class CdssSupplier implements SelectableByName{
 
   String name;
   String baseUrl;

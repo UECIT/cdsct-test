@@ -10,7 +10,9 @@ public enum CDSS implements SelectableByName {
   LOCAL("Local"),
   DOCKERIZED("Dockerized CDSS"),
   REFERENCED("Referenced"),
-  CONTAINED("Contained");
+  CONTAINED("Contained"),
+  SUPPLIER_A("Supplier A"),
+  SUPPLIER_B("Supplier B");
 
   private String name;
 
