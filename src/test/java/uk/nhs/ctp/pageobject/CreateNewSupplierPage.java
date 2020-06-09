@@ -61,7 +61,7 @@ public class CreateNewSupplierPage extends BaseSupplierPage {
           By.xpath("//mat-option/span[contains(.,'" + newSupplier.getSupportedVersion().getDisplay() + "')]"));
       wait.until(elementToBeClickable(option)).click();
     }
-    
+
     saveButton.click();
   }
 
