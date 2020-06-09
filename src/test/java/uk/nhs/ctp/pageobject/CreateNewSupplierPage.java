@@ -55,11 +55,13 @@ public class CreateNewSupplierPage extends BaseSupplierPage {
     }
 
     // Angular does not use 'select's so we have to do this manually
-    wait.until(elementToBeClickable(supportedVersionDropdown)).click();
-    WebElement option = webdriver.findElement(
-        By.xpath("//mat-option/span[contains(.,'" + newSupplier.getSupportedVersion().getDisplay() + "')]"));
-    wait.until(elementToBeClickable(option)).click();
-
+    if (newSupplier.getSupportedVersion() != null) {
+      wait.until(elementToBeClickable(supportedVersionDropdown)).click();
+      WebElement option = webdriver.findElement(
+          By.xpath("//mat-option/span[contains(.,'" + newSupplier.getSupportedVersion().getDisplay() + "')]"));
+      wait.until(elementToBeClickable(option)).click();
+    }
+    
     saveButton.click();
   }
 
