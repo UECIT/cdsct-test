@@ -28,4 +28,7 @@ public abstract class BaseSupplierPage extends PageObject {
   @FindBy(id = "data-ref-res-button")
   protected WebElement inputDataByResourceButton;
 
+  @FindBy(id = "supportedVersion")
+  protected WebElement supportedVersionDropdown;
+
 }

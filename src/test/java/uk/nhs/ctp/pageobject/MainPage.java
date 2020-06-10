@@ -77,7 +77,7 @@ public class MainPage extends PageObject {
   @FindBy(xpath = CDSS_SELECTION_BUTTONS_PATH)
   private List<WebElement> cdssSelectionButtons;
 
-  @FindBy(id = "mat-select-0")
+  @FindBy(className = "mat-select-trigger")
   private WebElement serviceSelectionDropdown;
 
   @FindBy(tagName = "app-main")

@@ -1,8 +1,10 @@
 package uk.nhs.ctp.pageobject;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -50,6 +52,14 @@ public class CreateNewSupplierPage extends BaseSupplierPage {
           inputParametersByReferenceButton.click();
           break;
       }
+    }
+
+    // Angular does not use 'select's so we have to do this manually
+    if (newSupplier.getSupportedVersion() != null) {
+      wait.until(elementToBeClickable(supportedVersionDropdown)).click();
+      WebElement option = webdriver.findElement(
+          By.xpath("//mat-option/span[contains(.,'" + newSupplier.getSupportedVersion().getDisplay() + "')]"));
+      wait.until(elementToBeClickable(option)).click();
     }
 
     saveButton.click();
