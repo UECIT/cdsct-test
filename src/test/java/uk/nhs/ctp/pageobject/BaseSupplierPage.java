@@ -16,6 +16,9 @@ public abstract class BaseSupplierPage extends PageObject {
   @FindBy(xpath = "//input[@formcontrolname=\"baseUrl\"]")
   protected WebElement baseUrlTextBox;
 
+  @FindBy(id = "authToken")
+  protected WebElement authTokenTextBox;
+
   @FindBy(id = "param-ref-ref-button")
   protected WebElement inputParametersByReferenceButton;
 
