@@ -1,6 +1,7 @@
 package uk.nhs.ctp.model;
 
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -15,7 +16,9 @@ public class CdssSupplier implements SelectableByName {
   ReferenceType dataRefType;
   ReferenceType paramsRefType;
   CdsApiVersion supportedVersion;
-  String authToken;
+
+  @Default
+  String authToken = "";
 
   public enum ReferenceType {
     CONTAINED,
