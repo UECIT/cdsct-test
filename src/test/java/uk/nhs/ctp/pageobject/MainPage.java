@@ -8,7 +8,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllEle
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -155,7 +154,11 @@ public class MainPage extends PageObject {
     // Angular does not use 'select's so we have to do this manually
     wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
     By optionBy = By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]");
-    webdriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS); //TODO: Do this better.
+    try {
+      Thread.sleep(2000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     wait.until(elementToBeClickable(optionBy)).click();
   }
 
