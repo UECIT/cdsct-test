@@ -153,9 +153,8 @@ public class MainPage extends PageObject {
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
     // Angular does not use 'select's so we have to do this manually
     wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
-    WebElement option = webdriver.findElement(
-        By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]"));
-    wait.until(elementToBeClickable(option)).click();
+    By optionBy = By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]");
+    wait.until(elementToBeClickable(optionBy)).click();
   }
 
   public boolean triageReady() {
