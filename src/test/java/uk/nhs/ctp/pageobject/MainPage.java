@@ -152,13 +152,14 @@ public class MainPage extends PageObject {
 
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
     // Angular does not use 'select's so we have to do this manually
-    wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
-    By optionBy = By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]");
     try {
       Thread.sleep(2000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+    wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
+    By optionBy = By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]");
+
     wait.until(elementToBeClickable(optionBy)).click();
   }
 
