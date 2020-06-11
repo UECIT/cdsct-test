@@ -32,6 +32,7 @@ public class CreateNewSupplierPage extends BaseSupplierPage {
 
     nameTextBox.sendKeys(newSupplier.getName());
     baseUrlTextBox.sendKeys(newSupplier.getBaseUrl());
+    authTokenTextBox.sendKeys(newSupplier.getAuthToken());
     if (newSupplier.getDataRefType() != null) {
       switch (newSupplier.getDataRefType()) {
         case CONTAINED:

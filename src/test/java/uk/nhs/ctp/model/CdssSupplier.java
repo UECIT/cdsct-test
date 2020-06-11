@@ -1,13 +1,14 @@
 package uk.nhs.ctp.model;
 
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
 @Builder(toBuilder = true)
-public class CdssSupplier implements SelectableByName{
+public class CdssSupplier implements SelectableByName {
 
   String name;
   String baseUrl;
@@ -15,6 +16,9 @@ public class CdssSupplier implements SelectableByName{
   ReferenceType dataRefType;
   ReferenceType paramsRefType;
   CdsApiVersion supportedVersion;
+
+  @Default
+  String authToken = "";
 
   public enum ReferenceType {
     CONTAINED,
@@ -47,14 +51,15 @@ public class CdssSupplier implements SelectableByName{
   }
 
   public static CdssSupplier from(TableRow row) {
-        return CdssSupplier.builder()
-            .name(row.nextCell())
-            .baseUrl(row.nextCell())
-            .serviceDescriptions(row.nextCell())
-            .dataRefType(ReferenceType.fromDisplay(row.nextCell()))
-            .paramsRefType(ReferenceType.fromDisplay(row.nextCell()))
-            .supportedVersion(CdsApiVersion.fromDisplay(row.nextCell()))
-            .build();
+    return CdssSupplier.builder()
+        .name(row.nextCell())
+        .baseUrl(row.nextCell())
+        .serviceDescriptions(row.nextCell())
+        .dataRefType(ReferenceType.fromDisplay(row.nextCell()))
+        .paramsRefType(ReferenceType.fromDisplay(row.nextCell()))
+        .supportedVersion(CdsApiVersion.fromDisplay(row.nextCell()))
+        .authToken("")
+        .build();
   }
 
 }

@@ -80,14 +80,14 @@ public class MainPage extends PageObject {
   @FindBy(className = "mat-select-trigger")
   private WebElement serviceSelectionDropdown;
 
+  @FindBy(className = "mat-select-panel")
+  private WebElement serviceSelectionOptions;
+
   @FindBy(tagName = "app-main")
   private WebElement component;
 
   @FindBy(xpath = LAUNCH_PATH)
   private WebElement launchButton;
-
-  @FindBy(className = "menuBar")
-  private WebElement menuBar;
 
   @FindBy(tagName = "snack-bar-container")
   private WebElement snackBar;
@@ -152,10 +152,15 @@ public class MainPage extends PageObject {
 
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
     // Angular does not use 'select's so we have to do this manually
+    try {
+      Thread.sleep(2000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     wait.until(elementToBeClickable(serviceSelectionDropdown)).click();
-    WebElement option = webdriver.findElement(
-        By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]"));
-    wait.until(elementToBeClickable(option)).click();
+    By optionBy = By.xpath("//mat-option/span[contains(.,'" + serviceDefinition.getName() + "')]");
+
+    wait.until(elementToBeClickable(optionBy)).click();
   }
 
   public boolean triageReady() {
