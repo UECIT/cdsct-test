@@ -24,7 +24,7 @@ import uk.nhs.ctp.model.ServiceDefinition;
 import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
-import uk.nhs.ctp.pageobject.CreateNewSupplierPage;
+import uk.nhs.ctp.pageobject.CreateNewCdssPage;
 import uk.nhs.ctp.pageobject.LoginPage;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
@@ -42,7 +42,7 @@ public class SmokeTest extends EMSTest {
   private MainPage mainPage;
   private TriagePage triagePage;
   private ManageCdssSuppliersPage manageCdssSuppliersPage;
-  private CreateNewSupplierPage createNewSupplierPage;
+  private CreateNewCdssPage createNewCdssPage;
 
   @Before
   public void setup() {
@@ -53,7 +53,7 @@ public class SmokeTest extends EMSTest {
     triagePage = new TriagePage(driver);
 
     manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
-    createNewSupplierPage = new CreateNewSupplierPage(driver);
+    createNewCdssPage = new CreateNewCdssPage(driver);
   }
 
   @Test
@@ -80,7 +80,7 @@ public class SmokeTest extends EMSTest {
 
     mainPage.manageCdssSuppliers();
     manageCdssSuppliersPage.createNewSupplier();
-    createNewSupplierPage.create(ems.getCdssSupplier());
+    createNewCdssPage.create(ems.getCdssSupplier());
     manageCdssSuppliersPage.onPage();
   }
 

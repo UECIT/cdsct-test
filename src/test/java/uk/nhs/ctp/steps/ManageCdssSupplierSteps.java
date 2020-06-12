@@ -14,7 +14,7 @@ import uk.nhs.ctp.model.CdssSupplier.CdsApiVersion;
 import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
-import uk.nhs.ctp.pageobject.UpdateSupplierPage;
+import uk.nhs.ctp.pageobject.UpdateCdssPage;
 
 public class ManageCdssSupplierSteps extends EMSTest {
 
@@ -58,7 +58,7 @@ public class ManageCdssSupplierSteps extends EMSTest {
   @Then("the created supplier has the auth token")
   public void cdssSupplierHasAuthToken() {
     ManageCdssSuppliersPage suppliersPage = new ManageCdssSuppliersPage(ems.getDriver());
-    UpdateSupplierPage updatePage = new UpdateSupplierPage(ems.getDriver());
+    UpdateCdssPage updatePage = new UpdateCdssPage(ems.getDriver());
 
     suppliersPage.onPage();
 

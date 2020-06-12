@@ -4,9 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseSupplierPage extends PageObject {
+public abstract class BaseCdssPage extends PageObject {
 
-  public BaseSupplierPage(WebDriver driver) {
+  public BaseCdssPage(WebDriver driver) {
     super(driver);
   }
 

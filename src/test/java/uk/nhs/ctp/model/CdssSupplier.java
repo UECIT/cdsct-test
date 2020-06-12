@@ -58,7 +58,6 @@ public class CdssSupplier implements SelectableByName {
         .dataRefType(ReferenceType.fromDisplay(row.nextCell()))
         .paramsRefType(ReferenceType.fromDisplay(row.nextCell()))
         .supportedVersion(CdsApiVersion.fromDisplay(row.nextCell()))
-        .authToken("")
         .build();
   }
 
