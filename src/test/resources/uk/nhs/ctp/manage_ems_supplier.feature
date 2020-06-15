@@ -8,4 +8,4 @@ Feature: Create and manage EMS Suppliers
   Scenario: Set the auth token for a EMS supplier
     Given a new EMS supplier with an auth token
     When I create the new EMS supplier
-    Then the created EMS supplier has the auth token
+    Then I can view the new EMS Supplier details

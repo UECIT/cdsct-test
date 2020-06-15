@@ -37,5 +37,6 @@ public class EmsSupplierActions {
     mainPage.manageEmsSuppliers();
     manageEmsSuppliersPage.create(ems.getEmsSupplier());
     manageEmsSuppliersPage.onPage();
+    manageEmsSuppliersPage.finishedEditing();
   }
 }

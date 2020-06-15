@@ -1,16 +1,22 @@
 package uk.nhs.ctp.pageobject;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementValue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import uk.nhs.ctp.model.CdssSupplier;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import uk.nhs.ctp.model.EmsSupplier;
 import uk.nhs.ctp.model.TableRow;
+import uk.nhs.ctp.util.SeleniumUtil;
 
 public class ManageEmsSuppliersPage extends PageObject {
 
@@ -45,16 +51,18 @@ public class ManageEmsSuppliersPage extends PageObject {
   }
 
   public void create(EmsSupplier newSupplier) {
-
-    createButton.click();
-
+    wait.until(visibilityOf(createButton)).click();
     wait.until(visibilityOfAllElements(nameTextBox, baseUrlTextBox));
 
-    nameTextBox.sendKeys(newSupplier.getName());
-    baseUrlTextBox.sendKeys(newSupplier.getBaseUrl());
-    authTokenTextBox.sendKeys(newSupplier.getAuthToken());
+    SeleniumUtil.setValue(nameTextBox, newSupplier.getName(), wait);
+    SeleniumUtil.setValue(baseUrlTextBox, newSupplier.getBaseUrl(), wait);
+    SeleniumUtil.setValue(authTokenTextBox, newSupplier.getAuthToken(), wait);
 
     saveButton.click();
+  }
+
+  public void suppliersListNonEmpty() {
+    wait.until(visibilityOfAllElements(supplierRows));
   }
 
   public List<EmsSupplier> supplierList() {
@@ -62,5 +70,32 @@ public class ManageEmsSuppliersPage extends PageObject {
         .map(TableRow::new)
         .map(EmsSupplier::from)
         .collect(Collectors.toList());
+  }
+
+  public Optional<WebElement> supplierRow(EmsSupplier emsSupplier) {
+    return supplierRows.stream()
+        .filter(row -> EmsSupplier.from(new TableRow(row)).getName().equals(emsSupplier.getName()))
+        .findFirst();
+  }
+
+  public void edit(EmsSupplier emsSupplier) {
+    var supplierRow = supplierRow(emsSupplier);
+    supplierRow.ifPresent(row -> row
+        .findElement(By.xpath(".//span[text()=\"Edit\"]"))
+        .click());
+
+    wait.until(visibilityOf(nameTextBox));
+  }
+
+  public EmsSupplier currentlyEditing() {
+    return EmsSupplier.builder()
+        .name(nameTextBox.getAttribute("value"))
+        .baseUrl(baseUrlTextBox.getAttribute("value"))
+        .authToken(authTokenTextBox.getAttribute("value"))
+        .build();
+  }
+
+  public void finishedEditing() {
+    wait.until(SeleniumUtil.notVisible(nameTextBox));
   }
 }

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasItem;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 import uk.nhs.ctp.actions.EmsSupplierActions;
 import uk.nhs.ctp.model.EmsSupplier;
 import uk.nhs.ctp.model.User;
@@ -41,10 +42,17 @@ public class ManageEmsSupplierSteps extends EMSTest {
   }
 
   @Then("I can view the new EMS Supplier details")
-  public void iCanViewTheNewCDSSSupplierDetails() {
+  public void emsSupplierHasAuthToken() {
     ManageEmsSuppliersPage suppliersPage = new ManageEmsSuppliersPage(ems.getDriver());
+    suppliersPage.onPage();
+    suppliersPage.suppliersListNonEmpty();
 
-    assertThat(suppliersPage.supplierList(),
-        hasItem(sameBeanAs(ems.getEmsSupplier())));
+    List<EmsSupplier> suppliers = suppliersPage.supplierList();
+    assertThat(suppliers, hasItem(sameBeanAs(ems.getEmsSupplier())
+        .ignoring("authToken")));
+
+    suppliersPage.edit(ems.getEmsSupplier());
+
+    assertThat(suppliersPage.currentlyEditing(), sameBeanAs(ems.getEmsSupplier()));
   }
 }
