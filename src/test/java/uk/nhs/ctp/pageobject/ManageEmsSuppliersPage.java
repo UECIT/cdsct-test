@@ -7,13 +7,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import uk.nhs.ctp.model.EmsSupplier;
 import uk.nhs.ctp.model.TableRow;
 import uk.nhs.ctp.util.SeleniumUtil;
@@ -72,7 +69,7 @@ public class ManageEmsSuppliersPage extends PageObject {
         .collect(Collectors.toList());
   }
 
-  public Optional<WebElement> supplierRow(EmsSupplier emsSupplier) {
+  private Optional<WebElement> supplierRow(EmsSupplier emsSupplier) {
     return supplierRows.stream()
         .filter(row -> EmsSupplier.from(new TableRow(row)).getName().equals(emsSupplier.getName()))
         .findFirst();
@@ -96,6 +93,6 @@ public class ManageEmsSuppliersPage extends PageObject {
   }
 
   public void finishedEditing() {
-    wait.until(SeleniumUtil.notVisible(nameTextBox));
+    wait.until(SeleniumUtil.absenceOf(nameTextBox));
   }
 }

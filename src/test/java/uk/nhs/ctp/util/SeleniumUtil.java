@@ -40,7 +40,7 @@ public class SeleniumUtil {
   /**
    * Condition to check if an element is not displayed, or cannot be found in the DOM
    */
-  public ExpectedCondition<Boolean> notVisible(WebElement element) {
+  public ExpectedCondition<Boolean> absenceOf(WebElement element) {
     return new ExpectedCondition<>() {
       @NullableDecl
       @Override
