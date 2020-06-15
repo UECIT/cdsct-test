@@ -35,6 +35,7 @@ public class MainPage extends PageObject {
   public static final String LOGOUT_BUTTON_PATH = "//button[text()=\"Log Off\"]";
   public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
   public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
+  public static final String MANAGE_EMS_SUPPLIERS_PATH = "//button[@routerlink=\"/ems_suppliers\"]";
 
   private static final String PATIENT_BUTTONS_PATH = "(//patient-selection//button)[position()<last()]";
   private static final String SETTING_CONTEXT_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Setting Context\"]]//button";
@@ -58,6 +59,9 @@ public class MainPage extends PageObject {
 
   @FindBy(xpath = MANAGE_CDSS_SUPPLIERS_PATH)
   private WebElement manageCdssSuppliersButton;
+
+  @FindBy(xpath = MANAGE_EMS_SUPPLIERS_PATH)
+  private WebElement manageEmsSuppliersButton;
 
   @FindBy(xpath = PATIENT_BUTTONS_PATH)
   private List<WebElement> patientButtons;
@@ -113,6 +117,11 @@ public class MainPage extends PageObject {
   public void logout() {
     wait.until(elementToBeClickable(accountButton)).click();
     wait.until(elementToBeClickable(logoutButton)).click();
+  }
+
+  public void manageEmsSuppliers() {
+    wait.until(elementToBeClickable(adminButton)).click();
+    wait.until(elementToBeClickable(manageEmsSuppliersButton)).click();
   }
 
   public void manageCdssSuppliers() {

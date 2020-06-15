@@ -10,6 +10,7 @@ public class EMS {
   WebDriver driver;
   User user;
   CdssSupplier cdssSupplier;
+  EmsSupplier emsSupplier;
   CDSS cdss;
 
   /**

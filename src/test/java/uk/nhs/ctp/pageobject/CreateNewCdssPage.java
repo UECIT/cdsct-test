@@ -10,9 +10,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import uk.nhs.ctp.model.CdssSupplier;
 
-public class CreateNewSupplierPage extends BaseSupplierPage {
+public class CreateNewCdssPage extends BaseCdssPage {
 
-  public CreateNewSupplierPage(WebDriver driver) {
+  public CreateNewCdssPage(WebDriver driver) {
     super(driver);
   }
 

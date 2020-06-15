@@ -10,6 +10,7 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import uk.nhs.ctp.actions.CdssSupplierActions;
+import uk.nhs.ctp.actions.LoginActions;
 import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.CdssSupplier;
 import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
@@ -42,7 +43,7 @@ public class SupplierPartitioningSteps extends EMSTest {
 
     CdssSupplierActions.loginCreateSupplier(ems);
 
-    CdssSupplierActions.logout(ems);
+    LoginActions.logout(ems);
 
     ems.setCdss(CDSS.CONTAINED);
     ems.setCdssSupplier(cdss2);
@@ -57,10 +58,10 @@ public class SupplierPartitioningSteps extends EMSTest {
     MainPage mainPage = new MainPage(driver);
     ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
 
-    CdssSupplierActions.logout(ems);
+    LoginActions.logout(ems);
 
     ems.setUser(User.supplier1());
-    CdssSupplierActions.login(ems);
+    LoginActions.login(ems);
 
     mainPage.onPage();
   }

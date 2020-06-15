@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class UpdateSupplierPage extends BaseSupplierPage {
+public class UpdateCdssPage extends BaseCdssPage {
 
-  public UpdateSupplierPage(WebDriver driver) {
+  public UpdateCdssPage(WebDriver driver) {
     super(driver);
   }
 
