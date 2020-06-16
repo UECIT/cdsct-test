@@ -18,9 +18,11 @@ import uk.nhs.ctp.model.ServiceDefinition;
 import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
+import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.MainPage;
+import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.TriagePage;
-import uk.nhs.ctp.util.SeleniumUtil;
+import uk.nhs.ctp.pageobject.UpdateCdssPage;
 
 public class ReferencingTogglesSteps extends EMSTest {
 
@@ -31,7 +33,8 @@ public class ReferencingTogglesSteps extends EMSTest {
         .name(CDSS.REFERENCED.getName())
         .dataRefType(ReferenceType.REFERENCE)
         .paramsRefType(ReferenceType.REFERENCE)
-        .baseUrl("http://cdss:8080/fhir/")
+        .baseUrl("http://cdss:8080/fhir")
+        .authToken(cactusAuthToken)
         .build();
     ems.setCdssSupplier(cdssSupplier);
     ems.setUser(User.admin());
@@ -46,7 +49,8 @@ public class ReferencingTogglesSteps extends EMSTest {
         .name(CDSS.CONTAINED.getName())
         .dataRefType(ReferenceType.CONTAINED)
         .paramsRefType(ReferenceType.CONTAINED)
-        .baseUrl("http://cdss:8080/fhir/")
+        .baseUrl("http://cdss:8080/fhir")
+        .authToken(cactusAuthToken)
         .build();
     ems.setCdssSupplier(cdssSupplier);
     ems.setUser(User.admin());
@@ -76,7 +80,14 @@ public class ReferencingTogglesSteps extends EMSTest {
     TriagePage triagePage = new TriagePage(driver);
 
     assertThat(triagePage.onPage(), is(true));
+    MainPage mainPage = new MainPage(driver);
+    mainPage.manageCdssSuppliers();
+    ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
+    manageCdssSuppliersPage.edit(ems.getCdssSupplier().getName());
+    UpdateCdssPage updateCdssPage = new UpdateCdssPage(driver);
+    updateCdssPage.delete();
+    DeleteCdssPage deleteCdssPage = new DeleteCdssPage(driver);
+    deleteCdssPage.delete();
   }
-
 
 }

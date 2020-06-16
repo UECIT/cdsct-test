@@ -54,5 +54,9 @@ public class ManageEmsSupplierSteps extends EMSTest {
     suppliersPage.edit(ems.getEmsSupplier());
 
     assertThat(suppliersPage.currentlyEditing(), sameBeanAs(ems.getEmsSupplier()));
+
+    //Tidy up EMS
+    suppliersPage.cancelEdit();
+    suppliersPage.delete(ems.getEmsSupplier());
   }
 }

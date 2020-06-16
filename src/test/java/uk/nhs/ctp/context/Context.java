@@ -21,6 +21,9 @@ public class Context {
   @Value("${ems.url}")
   private String emsUrl;
 
+  @Value("${cactus.jwt}")
+  private String authToken;
+
   @Value("${driver.location}")
   public void setDriverLocation(String driverLocation) {
     DRIVER_LOCATION = driverLocation;
@@ -44,6 +47,11 @@ public class Context {
   @Bean
   public String emsUrl() {
     return emsUrl;
+  }
+
+  @Bean
+  public String cactusAuthToken() {
+    return authToken;
   }
 
   @Bean

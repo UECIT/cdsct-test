@@ -1,17 +1,18 @@
 package uk.nhs.ctp.util;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementValue;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import lombok.experimental.UtilityClass;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @UtilityClass
@@ -33,8 +34,10 @@ public class SeleniumUtil {
    * Sends value to an input element using sendKeys and waits to make sure the value has been accepted
    */
   public void setValue(WebElement element, String value, WebDriverWait wait) {
+    element.clear();
+    wait.until(textToBePresentInElementValue(element, ""));
     element.sendKeys(value);
-    wait.until(ExpectedConditions.textToBePresentInElementValue(element, value));
+    wait.until(textToBePresentInElementValue(element, value));
   }
 
   /**
@@ -47,7 +50,7 @@ public class SeleniumUtil {
       public Boolean apply(@NullableDecl WebDriver webDriver) {
         try {
           return element.isDisplayed() ? null : true;
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
           return true;
         }
       }

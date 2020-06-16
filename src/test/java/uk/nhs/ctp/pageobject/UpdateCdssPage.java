@@ -1,5 +1,6 @@
 package uk.nhs.ctp.pageobject;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 import org.openqa.selenium.WebDriver;
@@ -18,6 +19,8 @@ public class UpdateCdssPage extends BaseCdssPage {
   @FindBy(xpath = "//button[@type=\"submit\"]")
   private WebElement updateButton;
 
+  @FindBy(xpath = "//span[text()=\"Delete Supplier\"]")
+  private WebElement deleteSupplierButton;
   @Override
   public boolean onPage() {
     return wait.until(visibilityOf(component)).isDisplayed();
@@ -25,5 +28,9 @@ public class UpdateCdssPage extends BaseCdssPage {
 
   public String getAuthToken() {
     return wait.until(visibilityOf(authTokenTextBox)).getAttribute("value");
+  }
+
+  public void delete() {
+    wait.until(elementToBeClickable(deleteSupplierButton)).click();
   }
 }
