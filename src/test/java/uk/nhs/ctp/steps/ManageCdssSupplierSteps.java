@@ -8,11 +8,13 @@ import static org.hamcrest.Matchers.hasItem;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.WebDriver;
 import uk.nhs.ctp.actions.CdssSupplierActions;
 import uk.nhs.ctp.model.CdssSupplier;
 import uk.nhs.ctp.model.CdssSupplier.CdsApiVersion;
 import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
 import uk.nhs.ctp.model.User;
+import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.UpdateCdssPage;
 
@@ -38,10 +40,18 @@ public class ManageCdssSupplierSteps extends EMSTest {
 
   @Then("I can view the new CDSS Supplier details")
   public void iCanViewTheNewCDSSSupplierDetails() {
-    ManageCdssSuppliersPage suppliersPage = new ManageCdssSuppliersPage(ems.getDriver());
+    WebDriver driver = ems.getDriver();
+    ManageCdssSuppliersPage suppliersPage = new ManageCdssSuppliersPage(driver);
 
     assertThat(suppliersPage.supplierList(),
         hasItem(sameBeanAs(ems.getCdssSupplier())));
+
+    //Tidy up CDSS
+    suppliersPage.edit(ems.getCdssSupplier().getName());
+    UpdateCdssPage updateCdssPage = new UpdateCdssPage(driver);
+    updateCdssPage.delete();
+    DeleteCdssPage deleteCdssPage = new DeleteCdssPage(driver);
+    deleteCdssPage.delete();
   }
 
   @Given("a new CDSS supplier with an auth token")
@@ -59,13 +69,19 @@ public class ManageCdssSupplierSteps extends EMSTest {
   public void cdssSupplierHasAuthToken() {
     ManageCdssSuppliersPage suppliersPage = new ManageCdssSuppliersPage(ems.getDriver());
     UpdateCdssPage updatePage = new UpdateCdssPage(ems.getDriver());
-
-    suppliersPage.onPage();
-
     suppliersPage.edit(ems.getCdssSupplier().getName());
     updatePage.onPage();
 
     assertThat(updatePage.getAuthToken(), equalTo("token"));
+
+    // Tidy up CDSS
+    updatePage.delete();
+    DeleteCdssPage deleteCdssPage = new DeleteCdssPage(ems.getDriver());
+    deleteCdssPage.delete();
+  }
+
+  private void cleanUpCdss() {
+
   }
 
 }

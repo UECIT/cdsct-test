@@ -24,7 +24,7 @@ services:
     - SPRING_DATASOURCE_URL=jdbc:mysql://fhir-server-mysql:3306/cdss_resources
     - SPRING_DATASOURCE_USERNAME=root
     - SPRING_DATASOURCE_PASSWORD=password
-    - fhir.server=http://fhir-server:8084/fhir
+    - FHIR_SERVER=http://fhir-server:8084/fhir
     depends_on: 
       - fhir-server-mysql
   ems:

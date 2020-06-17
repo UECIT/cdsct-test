@@ -1,6 +1,6 @@
 package uk.nhs.ctp.pageobject;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementValue;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
@@ -39,6 +39,9 @@ public class ManageEmsSuppliersPage extends PageObject {
   @FindBy(css = "button.saveEms")
   private WebElement saveButton;
 
+  @FindBy(xpath = "//button//*[text()=\"Cancel\"]")
+  private WebElement cancelButton;
+
   @FindBy(css = "tr.emsSupplier")
   private List<WebElement> supplierRows;
 
@@ -49,13 +52,13 @@ public class ManageEmsSuppliersPage extends PageObject {
 
   public void create(EmsSupplier newSupplier) {
     wait.until(visibilityOf(createButton)).click();
-    wait.until(visibilityOfAllElements(nameTextBox, baseUrlTextBox));
+    wait.until(visibilityOfAllElements(nameTextBox, baseUrlTextBox, authTokenTextBox));
 
     SeleniumUtil.setValue(nameTextBox, newSupplier.getName(), wait);
     SeleniumUtil.setValue(baseUrlTextBox, newSupplier.getBaseUrl(), wait);
     SeleniumUtil.setValue(authTokenTextBox, newSupplier.getAuthToken(), wait);
 
-    saveButton.click();
+    wait.until(elementToBeClickable(saveButton)).click();
   }
 
   public void suppliersListNonEmpty() {
@@ -94,5 +97,20 @@ public class ManageEmsSuppliersPage extends PageObject {
 
   public void finishedEditing() {
     wait.until(SeleniumUtil.absenceOf(nameTextBox));
+  }
+
+  public void cancelEdit() {
+    wait.until(elementToBeClickable(cancelButton)).click();
+    finishedEditing();
+  }
+
+  public void delete(EmsSupplier emsSupplier) {
+    var supplierRow = supplierRow(emsSupplier);
+
+    supplierRow.ifPresent(row -> {
+      WebElement removeButton = row.findElement(By.xpath(".//span[text()=\"Remove\"]"));
+      wait.until(elementToBeClickable(removeButton)).click();
+      wait.until(SeleniumUtil.absenceOf(row));
+    });
   }
 }

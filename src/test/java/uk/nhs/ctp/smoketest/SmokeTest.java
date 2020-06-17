@@ -25,10 +25,12 @@ import uk.nhs.ctp.model.SettingContext;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
 import uk.nhs.ctp.pageobject.CreateNewCdssPage;
+import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.LoginPage;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.TriagePage;
+import uk.nhs.ctp.pageobject.UpdateCdssPage;
 import uk.nhs.ctp.steps.EMSTest;
 
 @ContextConfiguration(classes = Context.class)
@@ -43,6 +45,8 @@ public class SmokeTest extends EMSTest {
   private TriagePage triagePage;
   private ManageCdssSuppliersPage manageCdssSuppliersPage;
   private CreateNewCdssPage createNewCdssPage;
+  private UpdateCdssPage updateCdssPage;
+  private DeleteCdssPage deleteCdssPage;
 
   @Before
   public void setup() {
@@ -54,6 +58,8 @@ public class SmokeTest extends EMSTest {
 
     manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
     createNewCdssPage = new CreateNewCdssPage(driver);
+    updateCdssPage = new UpdateCdssPage(driver);
+    deleteCdssPage = new DeleteCdssPage(driver);
   }
 
   @Test
@@ -62,6 +68,7 @@ public class SmokeTest extends EMSTest {
     createCDSS();
     startTriage();
     performTriage();
+    removeCdss();
   }
 
   private void login() {
@@ -75,7 +82,8 @@ public class SmokeTest extends EMSTest {
         .name(CDSS.DOCKERIZED.getName())
         .dataRefType(ReferenceType.REFERENCE)
         .paramsRefType(ReferenceType.REFERENCE)
-        .baseUrl("http://cdss:8080/fhir/")
+        .baseUrl("http://cdss:8080/fhir")
+        .authToken(cactusAuthToken)
         .build());
 
     mainPage.manageCdssSuppliers();
@@ -109,6 +117,13 @@ public class SmokeTest extends EMSTest {
     assertThat(triagePage.getInterimCareAdvice(), hasSize(2));
     triagePage.answerQuestion("There is excessive bleeding, pulsating blood loss", Answers.YES);
     assertThat(triagePage.getResultTitle(), is("Call 999"));
+  }
+
+  private void removeCdss() {
+    mainPage.manageCdssSuppliers();
+    manageCdssSuppliersPage.edit(ems.getCdssSupplier().getName());
+    updateCdssPage.delete();
+    deleteCdssPage.delete();
   }
 
   @After

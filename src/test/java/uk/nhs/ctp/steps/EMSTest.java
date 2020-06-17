@@ -8,4 +8,7 @@ public class EMSTest {
   @Autowired
   protected EMS ems;
 
+  @Autowired
+  protected String cactusAuthToken;
+
 }

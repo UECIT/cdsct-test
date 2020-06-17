@@ -44,6 +44,7 @@ public class ManageCdssSuppliersPage extends PageObject {
   }
 
   public void edit(String name) {
+    onPage();
     String xpath = "//tr[td[text()=\"" + name + "\"]]//span[@class=\"actionButton\"]";
     WebElement editButton = webdriver.findElement(By.xpath(xpath));
     wait.until(elementToBeClickable(editButton)).click();
