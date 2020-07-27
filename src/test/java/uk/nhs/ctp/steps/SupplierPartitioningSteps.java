@@ -17,7 +17,6 @@ import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
 import uk.nhs.ctp.model.SelectionMode;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.pageobject.MainPage;
-import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 
 public class SupplierPartitioningSteps extends EMSTest {
 
@@ -56,7 +55,6 @@ public class SupplierPartitioningSteps extends EMSTest {
   public void viewSupplierA() {
     WebDriver driver = ems.getDriver();
     MainPage mainPage = new MainPage(driver);
-    ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
 
     LoginActions.logout(ems);
 
