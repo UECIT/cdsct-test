@@ -162,7 +162,7 @@ public class MainPage extends PageObject {
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
     // Angular does not use 'select's so we have to do this manually
     try {
-      Thread.sleep(2000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
+      Thread.sleep(5000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
