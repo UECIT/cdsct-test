@@ -30,6 +30,9 @@ echo "waiting for ems..."
 healthcheck "http://localhost:8083/fhir/metadata"
 echo "waiting for dos..."
 healthcheck "http://localhost:8085/fhir/metadata"
+echo "waiting for elasticsearch..."
+healthcheck "http://localhost:9200/_cluster/health"
+
 scriptFile="$(dirname "$0")"/supplier-setup.sql
 echo "running $scriptFile"
 script=$(<$scriptFile)
