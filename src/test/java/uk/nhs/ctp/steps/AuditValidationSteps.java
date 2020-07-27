@@ -7,17 +7,27 @@ import static org.hamcrest.Matchers.not;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import uk.nhs.ctp.actions.LoginActions;
+import org.openqa.selenium.WebDriver;
+import uk.nhs.ctp.actions.CdssSupplierActions;
+import uk.nhs.ctp.model.CdssSupplier;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.pageobject.AuditValidationPage;
+import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.MainPage;
+import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
+import uk.nhs.ctp.pageobject.UpdateCdssPage;
 
 public class AuditValidationSteps extends EMSTest {
 
   @Given("audits have been generated")
   public void auditsHaveBeenGenerated() {
     ems.setUser(User.admin());
-    LoginActions.login(ems);
+    CdssSupplier defaultSupplier = CdssSupplier.builder()
+        .name("Used to generate audits")
+        .baseUrl("audit.generator")
+        .build();
+    ems.setCdssSupplier(defaultSupplier);
+    CdssSupplierActions.loginCreateSupplier(ems, true);
   }
 
   @When("I navigate to the validation page")
@@ -30,6 +40,17 @@ public class AuditValidationSteps extends EMSTest {
   public void iCanViewTheAudits() {
     AuditValidationPage validationPage = new AuditValidationPage(ems.getDriver());
     assertThat(validationPage.interactionList(), not(empty()));
+
+    removeCdss();
   }
 
+  private void removeCdss() {
+    WebDriver driver = ems.getDriver();
+    ManageCdssSuppliersPage manageCdssSuppliersPage = new ManageCdssSuppliersPage(driver);
+    new MainPage(driver).manageCdssSuppliers();
+    manageCdssSuppliersPage.edit(ems.getCdssSupplier().getName());
+    new UpdateCdssPage(driver).delete();
+    new DeleteCdssPage(driver).delete();
+    manageCdssSuppliersPage.onPage();
+  }
 }

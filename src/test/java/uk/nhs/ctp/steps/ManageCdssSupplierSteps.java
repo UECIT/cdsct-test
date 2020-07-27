@@ -82,8 +82,4 @@ public class ManageCdssSupplierSteps extends EMSTest {
     suppliersPage.onPage();
   }
 
-  private void cleanUpCdss() {
-
-  }
-
 }
