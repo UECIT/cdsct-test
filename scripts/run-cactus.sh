@@ -42,7 +42,7 @@ echo "
 
 "
 
-docker-compose pull
+docker-compose pull -q
 docker-compose up -d
 
 attempt_counter=1
