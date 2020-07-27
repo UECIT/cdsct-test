@@ -46,8 +46,8 @@ docker-compose pull -q
 docker-compose up -d
 
 attempt_counter=1
-retry_wait=5
-max_attempts=50 #100 seconds
+retry_wait=10
+max_attempts=50 #500 seconds - github runners are slow.
 
 echo "waiting for cdss..."
 healthcheck "http://localhost:8080/fhir/metadata"
