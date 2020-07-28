@@ -9,13 +9,16 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import uk.nhs.ctp.actions.CdssSupplierActions;
+import uk.nhs.ctp.model.CDSS;
 import uk.nhs.ctp.model.CdssSupplier;
+import uk.nhs.ctp.model.CdssSupplier.ReferenceType;
 import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.pageobject.AuditValidationPage;
 import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.UpdateCdssPage;
+import uk.nhs.ctp.util.SeleniumUtil;
 
 public class AuditValidationSteps extends EMSTest {
 
@@ -23,8 +26,11 @@ public class AuditValidationSteps extends EMSTest {
   public void auditsHaveBeenGenerated() {
     ems.setUser(User.admin());
     CdssSupplier defaultSupplier = CdssSupplier.builder()
-        .name("Used to generate audits")
-        .baseUrl("audit.generator")
+        .name(CDSS.DOCKERIZED.getName())
+        .dataRefType(ReferenceType.REFERENCE)
+        .paramsRefType(ReferenceType.REFERENCE)
+        .baseUrl("http://cdss:8080/fhir")
+        .authToken(cactusAuthToken)
         .build();
     ems.setCdssSupplier(defaultSupplier);
     CdssSupplierActions.loginCreateSupplier(ems, true);
@@ -34,7 +40,9 @@ public class AuditValidationSteps extends EMSTest {
   public void iNavigateToTheValidationPage() throws Exception {
     MainPage mainPage = new MainPage(ems.getDriver());
     mainPage.home();
-    Thread.sleep(4000); // This should be enough time for ES to retrieve the audits
+    SeleniumUtil.takeScreenshot(ems.getDriver(), "home_page_audit-validation1");
+    Thread.sleep(10000); // This should be enough time for ES to retrieve the audits
+    SeleniumUtil.takeScreenshot(ems.getDriver(), "home_page_audit-validation2");
     mainPage.createValidationReport();
   }
 
