@@ -52,6 +52,7 @@ public class ManageCdssSupplierSteps extends EMSTest {
     updateCdssPage.delete();
     DeleteCdssPage deleteCdssPage = new DeleteCdssPage(driver);
     deleteCdssPage.delete();
+    suppliersPage.onPage();
   }
 
   @Given("a new CDSS supplier with an auth token")
@@ -78,10 +79,7 @@ public class ManageCdssSupplierSteps extends EMSTest {
     updatePage.delete();
     DeleteCdssPage deleteCdssPage = new DeleteCdssPage(ems.getDriver());
     deleteCdssPage.delete();
-  }
-
-  private void cleanUpCdss() {
-
+    suppliersPage.onPage();
   }
 
 }

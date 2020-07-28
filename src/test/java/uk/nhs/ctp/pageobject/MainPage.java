@@ -36,6 +36,7 @@ public class MainPage extends PageObject {
   public static final String HOME_BUTTON_PATH = "//button[span[text()=\"Home\"]]";
   public static final String MANAGE_CDSS_SUPPLIERS_PATH = "//button[@routerlink=\"/suppliers\"]";
   public static final String MANAGE_EMS_SUPPLIERS_PATH = "//button[@routerlink=\"/ems_suppliers\"]";
+  public static final String VALIDATION = "//button[@routerlink=\"/create_report\"]";
 
   private static final String PATIENT_BUTTONS_PATH = "(//patient-selection//button)[position()<last()]";
   private static final String SETTING_CONTEXT_BUTTONS_PATH = "//triage-selection[.//div[text()=\"Select Setting Context\"]]//button";
@@ -62,6 +63,9 @@ public class MainPage extends PageObject {
 
   @FindBy(xpath = MANAGE_EMS_SUPPLIERS_PATH)
   private WebElement manageEmsSuppliersButton;
+
+  @FindBy(xpath = VALIDATION)
+  private WebElement validationButton;
 
   @FindBy(xpath = PATIENT_BUTTONS_PATH)
   private List<WebElement> patientButtons;
@@ -129,6 +133,10 @@ public class MainPage extends PageObject {
     wait.until(elementToBeClickable(manageCdssSuppliersButton)).click();
   }
 
+  public void createValidationReport() {
+    wait.until(elementToBeClickable(validationButton)).click();
+  }
+
   public void selectPatient(Patient patient) {
     selectButtonWithText(patientButtons, patient);
   }
@@ -162,7 +170,7 @@ public class MainPage extends PageObject {
   public void selectServiceDefinition(ServiceDefinition serviceDefinition) {
     // Angular does not use 'select's so we have to do this manually
     try {
-      Thread.sleep(2000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
+      Thread.sleep(5000); //TODO: Do this better, the dropdown hasn't rendered its options straight away.
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

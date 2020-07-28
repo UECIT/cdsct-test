@@ -124,6 +124,7 @@ public class SmokeTest extends EMSTest {
     manageCdssSuppliersPage.edit(ems.getCdssSupplier().getName());
     updateCdssPage.delete();
     deleteCdssPage.delete();
+    manageCdssSuppliersPage.onPage();
   }
 
   @After

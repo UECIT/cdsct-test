@@ -25,6 +25,8 @@ services:
     - SPRING_DATASOURCE_USERNAME=root
     - SPRING_DATASOURCE_PASSWORD=password
     - FHIR_SERVER=http://fhir-server:8084/fhir
+    - CACTUS_AUTH_SERVER=http://ems:8083/auth
+    - ES_AUDIT=http://elasticsearch:9200
     depends_on: 
       - fhir-server-mysql
   ems:
@@ -39,7 +41,12 @@ services:
     - BLOB_SERVER=http://fhir-server:8084/blob
     - EMS_FHIR_SERVER=http://ems:8083/fhir
     - DOS_SERVER=http://dos:8085/fhir
-    depends_on: 
+    - EMS_FRONTEND=http://ems-ui:4200
+    - CACTUS_CDSS=http://cdss:8080/fhir
+    - CACTUS_CDSS_V2=na
+    - LOGS_SERVER=http://kibana:5601
+    - ES_AUDIT=http://elasticsearch:9200
+    depends_on:
       - ems-mysql
   ems-ui:
     image: docker.pkg.github.com/uecit/cactus-ems/cactus-ems-ui:${EMS_UI}
@@ -52,10 +59,43 @@ services:
     environment: 
       - FHIR_SERVER=http://fhir-server:8084/fhir
       - BLOB_SERVER=http://fhir-server:8084/blob
-    depends_on: 
+      - CACTUS_AUTH_SERVER=http://ems:8083/auth
+      - CACTUS_EMS_FHIR_SERVER=http://ems:8083/fhir
+      - ES_AUDIT=http://elasticsearch:9200
+    depends_on:
       - ems
       - fhir-server
   dos:
     image: docker.pkg.github.com/uecit/cactus-dos/cactus-dos:${DOS}
     ports:
-        - 8085:8085
+        - "8085:8085"
+    environment:
+      - CACTUS_AUTH_SERVER=http://ems:8083/auth
+      - ES_AUDIT=http://elasticsearch:9200
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      SERVER_PORT: 5601
+      SERVER_HOST: 0.0.0.0

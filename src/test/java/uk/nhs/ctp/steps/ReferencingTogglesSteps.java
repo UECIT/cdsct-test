@@ -88,6 +88,7 @@ public class ReferencingTogglesSteps extends EMSTest {
     updateCdssPage.delete();
     DeleteCdssPage deleteCdssPage = new DeleteCdssPage(driver);
     deleteCdssPage.delete();
+    manageCdssSuppliersPage.onPage();
   }
 
 }

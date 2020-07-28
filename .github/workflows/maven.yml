@@ -27,6 +27,13 @@ jobs:
       run: bash scripts/run-cactus.sh
     - name: Verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
+    - name: collate logs
+      run: bash scripts/collate-logs.sh
+    - name: upload logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: target/logs/*
     - name: Clean up
       run: docker-compose down
     - name: upload screenshots
@@ -37,7 +44,6 @@ jobs:
         path: target/screenshots/*
     - name: upload report
       uses: actions/upload-artifact@v2
-      if: failure()
       with:
         name: report
         path: target/report/*
