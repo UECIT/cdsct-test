@@ -1,6 +1,7 @@
 package uk.nhs.ctp.smoketest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
@@ -26,6 +27,7 @@ import uk.nhs.ctp.model.User;
 import uk.nhs.ctp.model.UserType;
 import uk.nhs.ctp.pageobject.CreateNewCdssPage;
 import uk.nhs.ctp.pageobject.DeleteCdssPage;
+import uk.nhs.ctp.pageobject.DoSCardPage;
 import uk.nhs.ctp.pageobject.LoginPage;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
@@ -62,12 +64,30 @@ public class SmokeTest extends EMSTest {
     deleteCdssPage = new DeleteCdssPage(driver);
   }
 
+  /**
+   * <h2>Overview</h2>
+   * This smoke test covers integration between CACTUS services.
+   * The EMS-UI -> EMS backend is covered in almost every interaction
+   * EMS -> CDSS, CDSS -> FHIR Server and EMS -> FHIR server is covered through a triage
+   * EMS -> DoS is covered by searching for services.
+   *
+   * <h2>Steps</h2>
+   * <ol>
+   *   <li>Login as admin</li>
+   *   <li>Register the Dockerised CDSS</li>
+   *   <li>Setup triage, manually select the 'Chest pains' scenario</li>
+   *   <li>Run through scenario, asserting question titles and results</li>
+   *   <li>Search the DoS for services and assert the results</li>
+   *   <li>Remove the registered CDSS</li>
+   * </ol>
+   */
   @Test
   public void smokeTest() {
     login();
     createCDSS();
     startTriage();
     performTriage();
+    checkServices();
     removeCdss();
   }
 
@@ -117,6 +137,14 @@ public class SmokeTest extends EMSTest {
     assertThat(triagePage.getInterimCareAdvice(), hasSize(2));
     triagePage.answerQuestion("There is excessive bleeding, pulsating blood loss", Answers.YES);
     assertThat(triagePage.getResultTitle(), is("Call 999"));
+  }
+
+  private void checkServices() {
+    DoSCardPage dosPage = new DoSCardPage(ems.getDriver());
+    assertThat(dosPage.onPage(), is(true));
+    dosPage.searchForServices();
+    assertThat(dosPage.getServices(),
+        containsInAnyOrder("Email", "Telephone", "Video", "Written", "Handover"));
   }
 
   private void removeCdss() {
