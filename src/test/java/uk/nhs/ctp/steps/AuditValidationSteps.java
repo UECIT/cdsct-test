@@ -18,7 +18,6 @@ import uk.nhs.ctp.pageobject.DeleteCdssPage;
 import uk.nhs.ctp.pageobject.MainPage;
 import uk.nhs.ctp.pageobject.ManageCdssSuppliersPage;
 import uk.nhs.ctp.pageobject.UpdateCdssPage;
-import uk.nhs.ctp.util.SeleniumUtil;
 
 public class AuditValidationSteps extends EMSTest {
 
@@ -40,9 +39,7 @@ public class AuditValidationSteps extends EMSTest {
   public void iNavigateToTheValidationPage() throws Exception {
     MainPage mainPage = new MainPage(ems.getDriver());
     mainPage.home();
-    SeleniumUtil.takeScreenshot(ems.getDriver(), "home_page_audit-validation1");
     Thread.sleep(10000); // This should be enough time for ES to retrieve the audits
-    SeleniumUtil.takeScreenshot(ems.getDriver(), "home_page_audit-validation2");
     mainPage.createValidationReport();
   }
 
