@@ -31,8 +31,10 @@ public class AuditValidationSteps extends EMSTest {
   }
 
   @When("I navigate to the validation page")
-  public void iNavigateToTheValidationPage() {
+  public void iNavigateToTheValidationPage() throws Exception {
     MainPage mainPage = new MainPage(ems.getDriver());
+    mainPage.home();
+    Thread.sleep(4000); // This should be enough time for ES to retrieve the audits
     mainPage.createValidationReport();
   }
 
