@@ -28,8 +28,10 @@ jobs:
     - name: Verify
       run: DRIVER_LOCATION=$CHROMEWEBDRIVER mvn -B verify --file pom.xml
     - name: collate logs
+      if: ${{ always() }}
       run: bash scripts/collate-logs.sh
     - name: upload logs
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: logs
@@ -43,6 +45,7 @@ jobs:
         name: screenshots
         path: target/screenshots/*
     - name: upload report
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: report
